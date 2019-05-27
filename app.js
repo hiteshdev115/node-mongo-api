@@ -21,6 +21,9 @@ app.get("/api/user/:id", user.getUser);
 app.put("/api/updateUser/:id", user.updateUser);
 app.delete("/api/deleteUser/:id", user.deleteUser);
 
+app.post("/api/user/:id/addNewCars", user.newUserCar);
+app.get('/api/car/user/:id', user.getUserCar);
+
 
 /*const PersonModel = Mongoose.model("person", {
     firstname: String,

@@ -17,6 +17,10 @@ var userSchema = new Schema({
   location: String,
   age: Number,
   friends:[friensSchema],
+  cars:[{
+    type: Schema.Types.ObjectId,
+    ref: 'car'
+  }],
   created_at: Date,
   updated_at: Date
 });
