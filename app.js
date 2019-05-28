@@ -13,6 +13,7 @@ app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
 
 var user = require('./routes/userApi'); 
+var cmspage = require('./routes/cmspageApi'); 
 
 
 app.post('/api/adduser', user.insertuser); 
@@ -23,6 +24,13 @@ app.delete("/api/deleteUser/:id", user.deleteUser);
 
 app.post("/api/user/:id/addNewCars", user.newUserCar);
 app.get('/api/car/user/:id', user.getUserCar);
+
+
+app.get('/api/allcmspage', cmspage.getallpages); 
+app.post('/api/:id/addcmspage', cmspage.insertpage); 
+app.put('/api/:id/updatecmspage/:pageid', cmspage.updatepage); 
+app.delete("/api/deletepage/:id", cmspage.deletepage);
+
 
 
 /*const PersonModel = Mongoose.model("person", {

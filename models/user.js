@@ -21,6 +21,10 @@ var userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'car'
   }],
+  cmspages:[{
+    type: Schema.Types.ObjectId,
+    ref: 'cmspage'
+  }],
   created_at: Date,
   updated_at: Date
 });
