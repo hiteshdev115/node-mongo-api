@@ -25,6 +25,10 @@ var userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'cmspage'
   }],
+  blog:[{
+    type: Schema.Types.ObjectId,
+    ref: 'blog'
+  }],
   created_at: Date,
   updated_at: Date
 });

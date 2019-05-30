@@ -8,7 +8,7 @@ var blogSchema = new Schema({
   subtitle: String,
   description: String,
   author: { type: String, required: true },
-  image: String,
+  blogimage: String,
   isActive: Boolean,
   created_at: Date,
   updated_at: Date

@@ -11,7 +11,7 @@ exports.getallpages = async function(req, res)
         var result = await cmsModel.find().exec();
         res.send(result);
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({ message: 'No data found!' });
     }
 };
 
@@ -40,7 +40,7 @@ exports.insertpage = async function(req, res)
         }
         
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({ message: 'Something went wrong!' });
     }
 };
 
@@ -64,7 +64,7 @@ exports.updatepage = async function(req, res)
         
         res.send(result);
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({ message: 'System could not found the data' });
     }
 };
 
@@ -72,9 +72,19 @@ exports.deletepage = async function(req, res)
 {
     try {
         var result = await cmsModel.deleteOne({ _id: req.params.id }).exec();
-        //userModel.deleteOne({ cmspages: ObjectId(req.params.id) });
+        userModel.findByIdAndUpdate(req.params.userId,
+            {$pull: {cmspages: req.params.id}},
+            {safe: true, upsert: true},
+            function(err, doc) {
+                if(err){
+                    res.status(500).send(error);
+                }else{
+                    //do stuff
+                }
+            }
+        );
         res.status(200).send({ message: 'You are deleted successfully' });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({ message: 'Something went wrong!!' });
     }
 };

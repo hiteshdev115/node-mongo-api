@@ -1,7 +1,6 @@
 // grab the things we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var user = require('./user');
 
 var cmspageSchema = new Schema({
   pagename: { type: String, required: true, unique: true },
@@ -24,10 +23,6 @@ cmspageSchema.pre('save', function(next) {
     next();
 });
 
-
-
-
-// the schema is useless so far
 // we need to create a model using it
 var cmspage = mongoose.model('cmspage', cmspageSchema);
 
