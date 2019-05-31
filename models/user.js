@@ -29,6 +29,10 @@ var userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'blog'
   }],
+  services:[{
+    type: Schema.Types.ObjectId,
+    ref: 'services'
+  }],
   created_at: Date,
   updated_at: Date
 });

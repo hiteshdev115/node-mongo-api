@@ -1,3 +1,9 @@
 Rest Api Retationship in mongo DB
 ------------------------------------
 https://www.youtube.com/watch?v=FVn_wj1jLN0
+
+https://codepen.io/bradwestfall/project/editor/XWNWge?preview_height=50&open_file=src/app.js
+
+https://jasonwatmore.com/post/2017/09/16/react-redux-user-registration-and-login-tutorial-example
+
+https://jasonwatmore.com/post/2018/09/11/react-basic-http-authentication-tutorial-example

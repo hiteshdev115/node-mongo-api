@@ -7,7 +7,7 @@ var servicesSchema = new Schema({
   title: String,
   description: String,
   author: { type: String, required: true },
-  image: String,
+  serviceimage: String,
   isActive: Boolean,
   created_at: Date,
   updated_at: Date

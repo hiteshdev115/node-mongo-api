@@ -50,6 +50,7 @@ var upload = multer({
 var user = require('./routes/userApi'); 
 var cmspage = require('./routes/cmspageApi'); 
 var blog = require('./routes/blogApi'); 
+var services = require('./routes/servicesApi'); 
 
 
 app.post('/api/adduser', user.insertuser); 
@@ -71,6 +72,11 @@ app.get('/api/allblog', blog.getallblog);
 app.post('/api/:id/addblog', upload.single('blogimage'), blog.insertblog); 
 app.put('/api/:id/updateblog/:blogid', blog.updateblog); 
 app.delete("/api/deleteblog/:id/user/:userId", blog.deleteblog);
+
+app.get('/api/allservices', services.getallservices); 
+app.post('/api/:id/addservice', upload.single('serviceimage'), services.insertservice); 
+app.put('/api/:id/updateservice/:serviceid', services.updateservice); 
+app.delete("/api/deleteservice/:id/user/:userId", services.deleteservice);
 
 
 
@@ -129,7 +135,7 @@ app.delete("/person/:id", async (request, response) => {
 
 
 
-
-app.listen(3000, () => {
-    console.log("Listening at :3000...");
+app.set('port', process.env.PORT || 3001);
+app.listen(3001, () => {
+    console.log("Listening at :3001...");
 });

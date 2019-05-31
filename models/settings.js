@@ -12,7 +12,7 @@ var settingsSchema = new Schema({
   state:String,
   country:String,
   contactno:String,
-  twitterurl:string,
+  twitterurl:String,
   linkedinurl:String,
   facebookurl:String,
   instagramurl:String,
