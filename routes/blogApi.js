@@ -78,7 +78,7 @@ exports.deleteblog = async function(req, res)
         var blog = await blogModel.findById(req.params.id).exec();
         //console.log(blog);
         if(blog.blogimage){
-            fs.unlinkSync(appRoot.path + "/images/"+blog.blogimage);
+            fs.unlinkSync(appRoot.path + "/client/public/images/"+blog.blogimage);
         }
 
         var result = await blogModel.deleteOne({ _id: req.params.id }).exec();

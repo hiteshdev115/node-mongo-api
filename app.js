@@ -11,6 +11,27 @@ Mongoose.connect("mongodb://localhost:27017/restApiDB", { useNewUrlParser: true 
 Mongoose.set('useCreateIndex', true);
 
 app.use(BodyParser.json());
+
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
+
 app.use(BodyParser.urlencoded({ extended: true }));
 
 
@@ -18,10 +39,11 @@ var multer = require('multer'); //for upload
 var path = require("path"); //for upload
 var appRoot = require('app-root-path'); //for get root folder path
 
+
 /*For file Upload*/
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, appRoot.path + "/images")
+        callback(null, appRoot.path + "/client/public/images")
     },
     filename: function (req, file, callback) {
         callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -50,8 +72,12 @@ var upload = multer({
 var user = require('./routes/userApi'); 
 var cmspage = require('./routes/cmspageApi'); 
 var blog = require('./routes/blogApi'); 
-var services = require('./routes/servicesApi'); 
+var services = require('./routes/servicesApi');
+var login = require('./routes/login'); 
 
+
+app.post('/api/login', login.login); 
+app.post('/api/register', login.register); 
 
 app.post('/api/adduser', user.insertuser); 
 app.get('/api/alluser', user.getallUser);

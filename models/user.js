@@ -13,7 +13,7 @@ var userSchema = new Schema({
   name: String,
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  admin: Boolean,
+  admin: { type: Boolean, default: false },
   location: String,
   age: Number,
   friends:[friensSchema],

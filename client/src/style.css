@@ -1,5 +1,5 @@
 body {
-  background-color: #FFCC00;
+  
   padding: 20px;
   margin: 0;
 }
@@ -35,4 +35,27 @@ ul.header li a {
 }
 .active {
   background-color: #0099FF;
+}
+.logo{
+  width: 75%;
+}
+.loginuser{
+  border-radius: 5px;
+  background: #2db6eb;
+  padding: 5px;
+  color: white;
+  cursor: pointer;
+  
+}
+.loginuser:hover{
+  background-color: aquamarine;
+  color: black;
+}
+.loginuser-submenu{
+  color: #111;
+  background-color: darkgray;
+}
+.loginuser-submenu:hover{
+  background-color: #2db6eb;
+  color: #111;
 }

@@ -7,3 +7,6 @@ https://codepen.io/bradwestfall/project/editor/XWNWge?preview_height=50&open_fil
 https://jasonwatmore.com/post/2017/09/16/react-redux-user-registration-and-login-tutorial-example
 
 https://jasonwatmore.com/post/2018/09/11/react-basic-http-authentication-tutorial-example
+
+For login with passport
+https://www.djamware.com/post/5a90c37980aca7059c14297a/securing-mern-stack-web-application-using-passport
