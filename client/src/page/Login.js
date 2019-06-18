@@ -20,14 +20,15 @@ class Login extends Component {
   }
   checkLogin(){
     this.state = {
-      loginUser: JSON.parse(localStorage.getItem('userdetails'))
+      loginUser: JSON.parse(localStorage.getItem('userdetails')),
+      adminLoginUser: JSON.parse(localStorage.getItem('admin-userdetails'))
     }
     if(this.state.loginUser === null){
       //open login screen
-      //console.log('nullll');
+      console.log('nullll');
     } else {
-      //console.log('else');
-      this.props.history.push('/');
+      console.log(this.state.loginUser.admin);
+      this.props.history.push('/login');    
     }
   }
   
@@ -44,17 +45,18 @@ class Login extends Component {
     //console.log(username);
     axios.post(url, { username, password })
       .then((result) => {
-        console.log("API RESPONSE");
-        console.log(result);
-        
-        localStorage.setItem('jwtToken', result.data.token);
-        localStorage.setItem('userdetails', result.data.userData);
+        //console.log("API RESPONSE");
+        //console.log(result);
         this.setState({ message: '' });
         //this.props.history.push('/');
         var resultObject = JSON.parse(result.data.userData);
         if(resultObject.admin === true){
+          localStorage.setItem('admin-jwtToken', result.data.token);
+          localStorage.setItem('admin-userdetails', result.data.userData);
           this.props.history.push('/admin/dashboard');
         } else {
+          localStorage.setItem('jwtToken', result.data.token);
+          localStorage.setItem('userdetails', result.data.userData);
           this.props.history.push('/');
         }
         window.location.reload();

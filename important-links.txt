@@ -10,3 +10,6 @@ https://jasonwatmore.com/post/2018/09/11/react-basic-http-authentication-tutoria
 
 For login with passport
 https://www.djamware.com/post/5a90c37980aca7059c14297a/securing-mern-stack-web-application-using-passport
+
+For Confirm Custom Dialog
+https://reactjsexample.com/react-component-confirm-dialog/

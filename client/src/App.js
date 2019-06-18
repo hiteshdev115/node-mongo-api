@@ -23,6 +23,8 @@ import HeaderComponent from './components/HeaderComponent';
 import FooterComponent from './components/FooterComponent';
 
 import AdminBlogListComponent from "./page/adminpages/Bloglist";
+import AdminAddnewblogComponent from "./page/adminpages/Addnewblog";
+import AdminEditlogComponent from "./page/adminpages/Editblog";
 
 import DashboardComponent from "./page/dashboard";
 
@@ -64,6 +66,8 @@ class App extends Component {
             <Route path='/register' component={Register} />
             <Route exact path='/admin/dashboard' component={DashboardComponent}></Route>
             <Route exact path='/admin/blog-manage' component={AdminBlogListComponent}></Route>
+            <Route exact path='/admin/addnewblog' component={AdminAddnewblogComponent}></Route>
+            <Route exact path='/admin/edit/:blogid' component={AdminEditlogComponent}></Route>
           </Switch>
           
           <FooterComponent></FooterComponent>

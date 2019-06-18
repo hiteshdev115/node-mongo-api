@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 //import ShowMoreText from 'react-show-more-text'; 
+import axios from 'axios';
 
 class Bloglist extends Component {
   constructor() {
@@ -7,8 +8,10 @@ class Bloglist extends Component {
     this.state = {
       blogs: [],
       error:null,
-      isLoading: true
-    }
+      isLoading: true,
+      adminLoginUser: JSON.parse(localStorage.getItem('admin-userdetails'))
+    };
+    this.deleteBlog = this.deleteBlog.bind(this);
     
   }
 
@@ -31,11 +34,25 @@ class Bloglist extends Component {
       .catch(error => this.setState({ error, isLoading: false }));
   }
   
+  deleteBlog= (blogid) => {
+    const { _id } = this.state.adminLoginUser;
+    //alert(blogid);
+    console.log(blogid);
+    
+      var url = 'http://localhost:3001/api/deleteblog/'+blogid+'/user/'+_id;
+      axios.delete(url)
+      .then(response => {
+          if(response){
+            this.fetchAllBlog();
+          }
+      })
+      .catch(error => this.setState({ error }));
+  }
   
   
   render() {
     const { blogs, isLoading } = this.state;
-    //console.log(blogs.length);
+    
     let rows = [];
     if(isLoading === true){
       rows.push(<div key="fail">Loading....</div>);
@@ -47,11 +64,11 @@ class Bloglist extends Component {
           <div className="table-row" key={j}>
               <div className="serial">{j}</div>                                    
               <div className="visit">{blogs[i].title}</div>
-              <div className="visit"> <img src={"./images/"+blogs[i].blogimage} alt="flag" width="100"></img></div>
+              <div className="visit"> <img src={"/images/"+blogs[i].blogimage} alt="flag" width="100"></img></div>
               <div className="visit"> Created : {blogs[i].created_at}, Updated on : {blogs[i].updated_at}</div>
               <div className="visit">
-                <a href="#" className="trash">Edit</a>&nbsp; | &nbsp;
-                <a href="#" className="trash">Delete</a>
+                <a href={"./edit/"+blogs[i]._id} className="trash">Edit</a>&nbsp; | &nbsp;
+                <a onClick={() => this.deleteBlog(blogs[i]._id)} className="trash">Delete</a>
               </div>
           </div>
         )
@@ -64,6 +81,7 @@ class Bloglist extends Component {
                 <h3 className="mb-30">Blogs</h3>
                 <div className="progress-table-wrap">
                     <div className="progress-table">
+                        <a href="./addnewblog" className="genric-btn primary circle">ADD NEW</a>
                         <div className="table-head">
                             <div className="serial">#</div>
                             <div className="visit">Blog Title</div>

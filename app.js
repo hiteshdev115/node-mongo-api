@@ -95,9 +95,13 @@ app.put('/api/:id/updatecmspage/:pageid', cmspage.updatepage);
 app.delete("/api/deletepage/:id/user/:userId", cmspage.deletepage);
 
 app.get('/api/allblog', blog.getallblog); 
+app.get('/api/getSingleblog/:id', blog.getSingleblog); 
+//app.post('/api/:id/addblog', upload.single('blogimage'), blog.insertblog); 
 app.post('/api/:id/addblog', upload.single('blogimage'), blog.insertblog); 
-app.put('/api/:id/updateblog/:blogid', blog.updateblog); 
+app.put('/api/:id/updateblog/:blogid', upload.single('blogimage'), blog.updateblog); 
 app.delete("/api/deleteblog/:id/user/:userId", blog.deleteblog);
+app.post("/api/removethumb/", blog.removeThumb);
+
 
 app.get('/api/allservices', services.getallservices); 
 app.post('/api/:id/addservice', upload.single('serviceimage'), services.insertservice); 

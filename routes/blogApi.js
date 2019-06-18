@@ -16,26 +16,60 @@ exports.getallblog = async function(req, res)
     }
 };
 
+exports.getSingleblog = async function(req, res)
+{
+    console.log('all blog action');
+    try {
+        var blog = await blogModel.findById(req.params.id).exec();
+        res.send(blog);
+    } catch (error) {
+        res.status(500).send({ message: 'No data found!' });
+    }
+};
+
+exports.removeThumb = async function(req, res)
+{
+    console.log('remove thumb');
+    var id = req.body.id;
+    console.log(id);
+    try {
+        var blog = await blogModel.findOneAndUpdate(    
+            { _id: id },      
+            { $set: { blogimage: "" } },      
+            {
+               new: true
+            }    
+        ).exec();
+        //console.log(blog);
+        res.send(blog);        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: 'No data found!' });
+    }
+};
+
 
 exports.insertblog = async function(req, res)
 {
     const userId  = req.params.id;
     req.body.author = userId;
     //console.log(userId);
-    //console.log(req.file.filename);
+    
     req.body.blogimage = '';
     if(req.file.filename){
         req.body.blogimage = req.file.filename;
     }
+    
     try {
-        //console.log(user);
+        
         if(userId)
-        {
+        {            
             var user = await userModel.findById(userId);
             var blog = new blogModel(req.body);
+            //console.log(blog);
             var result = await blog.save();
-
-            //Assign cms page to author's
+            
+            //Assign blog to author's
             user.blog.push(blog);
             await user.save();
 
@@ -52,14 +86,23 @@ exports.insertblog = async function(req, res)
 exports.updateblog = async function(req, res)
 {
     console.log("update page action....");
+    //console.log(req.body);
+    //console.log(req.file);
     
     try {
         //console.log("update user Id ==>"+req.params.id);
+        console.log(req.body);
+        
+        if(req.file !== undefined){
+            req.body.blogimage = '';
+            console.log("update user Id ==>"+req.body.blogimage);
+            req.body.blogimage = req.file.filename;
+        }
         const userId  = req.params.id;
         req.body.author = userId;
                 
         const blogId  = req.params.blogid;
-        //console.log(blogId);
+        
         var blog = await blogModel.findById(blogId).exec();
         
         blog.set(req.body);
@@ -68,12 +111,14 @@ exports.updateblog = async function(req, res)
         
         res.send(result);
     } catch (error) {
+        console.log(error);
         res.status(500).send({ message: 'System could not found the data' });
     }
 };
 
 exports.deleteblog = async function(req, res)
 {
+    console.log('Delete Blog Action');
     try {
         var blog = await blogModel.findById(req.params.id).exec();
         //console.log(blog);

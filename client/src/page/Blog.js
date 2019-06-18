@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ShowMoreText from 'react-show-more-text'; 
+import parse from 'html-react-parser';
 
 class Blog extends Component {
   
@@ -141,7 +142,7 @@ class Blog extends Component {
                                       more='Show more'
                                       less='Show less'
                                       anchorClass=''>
-                                      {description}
+                                      {parse(description)}
                                   </ShowMoreText>
                                 </div>
                                 
