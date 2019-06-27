@@ -62,3 +62,47 @@ ul.header li a {
 .admin-footer{
   padding: 35px;
 }
+.col-xs-4{
+  width: 40%;
+}
+.col-xs-4:first-child label{
+  float: left;
+}
+.col-xs-4:first-child #page-menu{
+  float: left;
+}
+
+.col-xs-4:nth-child(1) label{
+  float: left;
+  padding-left: 10px;
+}
+.col-xs-4:nth-child(1) input{
+  float: left;
+  
+}
+.col-xs-8{
+  width: 60%;
+}
+.pagination li{
+  padding: 0 10px 0 10px;
+  border: 0.5px solid grey;
+}
+.pagination li:hover{
+  background-color: #2db6eb; 
+}
+.pagination li:hover a{
+ 
+  color: white;
+}
+.pagination .active{
+  background-color: #2db6eb;  
+}
+.pagination .active a{
+  color: #FFF;
+}
+.pagination{
+  border: 1px solid grey;
+}
+.pagination .disabled a{
+  color: #d3d3ba;
+}

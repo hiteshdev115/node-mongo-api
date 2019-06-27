@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ShowMoreText from 'react-show-more-text'; 
 import parse from 'html-react-parser';
 
+
 class Blog extends Component {
   
   constructor() {
@@ -114,6 +115,7 @@ class Blog extends Component {
             </div>	
           </section>
           {error ? <p>{error.message}</p> : null}
+          
           <section className="post-content-area">
             <div className="container">
               <div className="row">

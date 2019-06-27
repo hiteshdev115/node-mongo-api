@@ -46,6 +46,7 @@ var storage = multer.diskStorage({
         callback(null, appRoot.path + "/client/public/images")
     },
     filename: function (req, file, callback) {
+        console.log(file);
         callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
 })
@@ -74,6 +75,7 @@ var cmspage = require('./routes/cmspageApi');
 var blog = require('./routes/blogApi'); 
 var services = require('./routes/servicesApi');
 var login = require('./routes/login'); 
+var setting = require('./routes/settingApi'); 
 
 
 app.post('/api/login', login.login); 
@@ -108,7 +110,10 @@ app.post('/api/:id/addservice', upload.single('serviceimage'), services.insertse
 app.put('/api/:id/updateservice/:serviceid', services.updateservice); 
 app.delete("/api/deleteservice/:id/user/:userId", services.deleteservice);
 
-
+app.get('/api/getsetting', setting.getSetting); 
+app.post('/api/savesetting', upload.single('logoimage'), setting.insertSetting); 
+app.post('/api/updatesetting/', upload.single('logoimage'), setting.updateSetting); 
+app.post("/api/removelogo/", setting.removeLogo);
 
 /*const PersonModel = Mongoose.model("person", {
     firstname: String,

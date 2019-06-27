@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-// { Glyphicon } from 'react-bootstrap';
 
-//import { Header } from './components/HeaderComponent';
-//import { Footer } from './components/FooterComponent';
-
-
-//import logo from './logo.svg';
 import './App.css';
 import "./style.css";
 
@@ -25,6 +19,9 @@ import FooterComponent from './components/FooterComponent';
 import AdminBlogListComponent from "./page/adminpages/Bloglist";
 import AdminAddnewblogComponent from "./page/adminpages/Addnewblog";
 import AdminEditlogComponent from "./page/adminpages/Editblog";
+import AdminSettingComponent from "./page/adminpages/Setting";
+
+import AdminDatatableComponent from "./page/adminpages/DatatablePage";
 
 import DashboardComponent from "./page/dashboard";
 
@@ -68,6 +65,9 @@ class App extends Component {
             <Route exact path='/admin/blog-manage' component={AdminBlogListComponent}></Route>
             <Route exact path='/admin/addnewblog' component={AdminAddnewblogComponent}></Route>
             <Route exact path='/admin/edit/:blogid' component={AdminEditlogComponent}></Route>
+            <Route exact path='/admin/settings' component={AdminSettingComponent}></Route>
+            <Route exact path='/admin/demopage' component={AdminDatatableComponent}></Route>
+            
           </Switch>
           
           <FooterComponent></FooterComponent>

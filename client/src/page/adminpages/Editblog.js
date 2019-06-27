@@ -192,6 +192,8 @@ class Editblog extends Component {
                 {imageDisp}
                 <br/> <br/>
                 <button className="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+                <br/>
+                <a href="../blog-manage" className="btn btn-lg btn-primary btn-block">Back To List</a>
             </form>
             </div>
         </section>      

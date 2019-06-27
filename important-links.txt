@@ -13,3 +13,10 @@ https://www.djamware.com/post/5a90c37980aca7059c14297a/securing-mern-stack-web-a
 
 For Confirm Custom Dialog
 https://reactjsexample.com/react-component-confirm-dialog/
+
+MDB icons for react
+https://mdbootstrap.com/docs/react/components/buttons-social/
+
+For table and pagination
+-----------------------------
+https://mdbootstrap.com/docs/react/tables/pagination/

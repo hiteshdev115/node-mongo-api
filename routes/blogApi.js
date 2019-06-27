@@ -51,19 +51,25 @@ exports.removeThumb = async function(req, res)
 
 exports.insertblog = async function(req, res)
 {
+    console.log(req);
     const userId  = req.params.id;
     req.body.author = userId;
     //console.log(userId);
     
-    req.body.blogimage = '';
-    if(req.file.filename){
+    console.log(req.body);
+    if(req.body.blogimage !== '')
+    {
         req.body.blogimage = req.file.filename;
     }
     
     try {
         
         if(userId)
-        {            
+        { 
+            //var str = req.body.blogname;
+            /*str = str.replace(/\s+/g, '-').toLowerCase();
+            req.body.blogname = str;
+            console.log(req.body);*/
             var user = await userModel.findById(userId);
             var blog = new blogModel(req.body);
             //console.log(blog);

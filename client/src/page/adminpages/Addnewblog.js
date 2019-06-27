@@ -16,7 +16,7 @@ class Addnewblog extends Component {
           description:'',
           isActive: true,
           message: '',
-          file: null,
+          file: '',
           adminLoginUser: JSON.parse(localStorage.getItem('admin-userdetails'))
         }; 
         this.onEditorChange = this.onEditorChange.bind( this );       
@@ -29,6 +29,11 @@ class Addnewblog extends Component {
     onChange = (e) => {
         const state = this.state
         state[e.target.name] = e.target.value;
+
+        if(e.target.name === 'title'){
+            const modified_slug = e.target.value.replace(/\s+/g, '-').toLowerCase();
+            state['blogname'] = modified_slug;
+        }
         this.setState(state);
     }
     onEditorChange( evt ) {
@@ -46,7 +51,11 @@ class Addnewblog extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('blogimage',this.state.file);
+        if(!this.state.file){
+            formData.append('blogimage','');
+        } else {
+            formData.append('blogimage',this.state.file); 
+        }
         formData.append('blogname',this.state.blogname);
         formData.append('title',this.state.title);
         formData.append('subtitle',this.state.subtitle);
@@ -57,9 +66,9 @@ class Addnewblog extends Component {
                 'content-type': 'multipart/form-data'
             }
         };
-        
-        var loginuseid = this.state.adminLoginUser._id;
-        var url = 'http://localhost:3001/api/'+loginuseid+'/addblog';
+        console.log(this.state.file);
+        var loginuserid = this.state.adminLoginUser._id;
+        var url = 'http://localhost:3001/api/'+loginuserid+'/addblog';
         
         axios.post(url, formData, config)
           .then((result) => {
@@ -81,7 +90,7 @@ class Addnewblog extends Component {
         return (
         <section className="post-content-area section-gap">
             <div className="container">
-            <form className="form-signin" onSubmit={this.onSubmit}>
+            <form className="form-addblog" onSubmit={this.onSubmit}>
             {message ? <div className="alert alert-warning alert-dismissible" role="alert">
                 { message }
               </div> : ''
@@ -114,6 +123,8 @@ class Addnewblog extends Component {
                 <input type="file" name="file" onChange={this.onChangeHandler}/>
                 <br/><br/>
                 <button className="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+                <br/>
+                <a href="./blog-manage" className="btn btn-lg btn-primary btn-block">Back To List</a>
             </form>
             </div>
         </section>      

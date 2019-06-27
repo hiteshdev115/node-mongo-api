@@ -6,10 +6,10 @@ var settingsSchema = new Schema({
   websiteurl: { type: String, required: true, unique: true },
   logoimage: String,
   companyname:String,
-  addressline1: String,
-  addressline1: String,
+  address1: String,
+  address2: String,
   city:String,
-  state:String,
+  proviance:String,
   country:String,
   contactno:String,
   twitterurl:String,
@@ -17,7 +17,6 @@ var settingsSchema = new Schema({
   facebookurl:String,
   instagramurl:String,
   footertext:String,
-  copyright:String,
   created_at: Date,
   updated_at: Date
 });
