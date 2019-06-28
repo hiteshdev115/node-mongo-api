@@ -6,7 +6,10 @@ var servicesSchema = new Schema({
   servicesname: { type: String, required: true, unique: true },
   title: String,
   description: String,
-  author: { type: String, required: true },
+  author: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   serviceimage: String,
   isActive: Boolean,
   created_at: Date,

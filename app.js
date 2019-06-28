@@ -6,6 +6,8 @@ Mongoose.set('useFindAndModify', false);
 var app = Express();
 var fs = require('fs');
 
+
+
 Mongoose.connect("mongodb://localhost:27017/restApiDB", { useNewUrlParser: true }).then(() => console.log('Now connected to MongoDB!'))
 .catch(err => console.error('Something went wrong', err));
 Mongoose.set('useCreateIndex', true);
@@ -35,7 +37,10 @@ app.use(function (req, res, next) {
 app.use(BodyParser.urlencoded({ extended: true }));
 
 
+
 var multer = require('multer'); //for upload
+const MulterResizer = require('multer-resizer');
+
 var path = require("path"); //for upload
 var appRoot = require('app-root-path'); //for get root folder path
 
@@ -50,6 +55,47 @@ var storage = multer.diskStorage({
         callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
 })
+
+const resizer = new MulterResizer({
+    
+    multer: multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, callback) {
+                callback(null, appRoot.path + "/client/public/images")
+            },
+            filename: function (req, file, callback) {
+                //console.log(file);
+                callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+            }
+        })
+    }),
+    tasks: [
+        {
+            resize: {
+                width: 1920,
+                height: 1080,
+                suffix: 'resized-big',
+                format:'png'
+            }
+        },
+        {
+            resize: {
+                width: 100,
+                height: 100,
+                suffix: 'resized-small',
+                format:'png'
+            }
+        },
+        {
+            cover: {
+                width: 160,
+                height: 112,
+                suffix: 'thumbnail',
+                format:'png'
+            }
+        }
+    ]
+});
 
 /*var images = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -98,77 +144,26 @@ app.delete("/api/deletepage/:id/user/:userId", cmspage.deletepage);
 
 app.get('/api/allblog', blog.getallblog); 
 app.get('/api/getSingleblog/:id', blog.getSingleblog); 
-//app.post('/api/:id/addblog', upload.single('blogimage'), blog.insertblog); 
-app.post('/api/:id/addblog', upload.single('blogimage'), blog.insertblog); 
-app.put('/api/:id/updateblog/:blogid', upload.single('blogimage'), blog.updateblog); 
+app.get('/api/blog/getRandomBlog/:blogname', blog.getRandomblog); 
+app.get('/api/getSingleBlogByName/:blogname', blog.getSingleblogByName); 
+app.post('/api/:id/addblog', resizer.single('blogimage'), blog.insertblog); 
+app.put('/api/:id/updateblog/:blogid', resizer.single('blogimage'), blog.updateblog); 
 app.delete("/api/deleteblog/:id/user/:userId", blog.deleteblog);
 app.post("/api/removethumb/", blog.removeThumb);
 
 
 app.get('/api/allservices', services.getallservices); 
-app.post('/api/:id/addservice', upload.single('serviceimage'), services.insertservice); 
-app.put('/api/:id/updateservice/:serviceid', services.updateservice); 
+app.get('/api/getSingleService/:id', services.getSingleservice); 
+app.get('/api/getSingleServiceByName/:servicesname', services.getSingleserviceByName); 
+app.post('/api/:id/addservice', resizer.single('serviceimage'), services.insertservice); 
+app.put('/api/:id/updateservice/:serviceid', resizer.single('serviceimage'), services.updateservice); 
 app.delete("/api/deleteservice/:id/user/:userId", services.deleteservice);
+app.post("/api/service/removethumb/", services.removeThumb);
 
 app.get('/api/getsetting', setting.getSetting); 
-app.post('/api/savesetting', upload.single('logoimage'), setting.insertSetting); 
-app.post('/api/updatesetting/', upload.single('logoimage'), setting.updateSetting); 
+app.post('/api/savesetting', resizer.single('logoimage'), setting.insertSetting); 
+app.post('/api/updatesetting/', resizer.single('logoimage'), setting.updateSetting); 
 app.post("/api/removelogo/", setting.removeLogo);
-
-/*const PersonModel = Mongoose.model("person", {
-    firstname: String,
-    lastname: String
-});
-
-app.post("/person", async (request, response) => {
-    try {
-        var person = new PersonModel(request.body);
-        var result = await person.save();
-        response.send(result);
-    } catch (error) {
-        response.status(500).send(error);
-    }
-});
-
-app.get("/people", async (request, response) => {
-    try {
-        var result = await PersonModel.find().exec();
-        response.send(result);
-    } catch (error) {
-        response.status(500).send(error);
-    }
-});
-
-app.get("/person/:id", async (request, response) => {
-    try {
-        var person = await PersonModel.findById(request.params.id).exec();
-        response.send(person);
-    } catch (error) {
-        response.status(500).send(error);
-    }
-});
-
-app.put("/person/:id", async (request, response) => {
-    try {
-        var person = await PersonModel.findById(request.params.id).exec();
-        person.set(request.body);
-        var result = await person.save();
-        response.send(result);
-    } catch (error) {
-        response.status(500).send(error);
-    }
-});
-
-app.delete("/person/:id", async (request, response) => {
-    try {
-        var result = await PersonModel.deleteOne({ _id: request.params.id }).exec();
-        response.send(result);
-    } catch (error) {
-        response.status(500).send(error);
-    }
-});*/
-
-
 
 app.set('port', process.env.PORT || 3001);
 app.listen(3001, () => {

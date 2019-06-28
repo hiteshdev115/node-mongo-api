@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom'
 class Header extends Component {
   
     
-  logout() {
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('userdetails');
+  logoutAdmin() {
     localStorage.removeItem('admin-jwtToken');
     localStorage.removeItem('admin-userdetails');
+    window.location.href="/login";
+  }
+  logoutUser() {
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userdetails');
     window.location.href="/login";
   }
 
@@ -64,7 +67,7 @@ class Header extends Component {
                   
                   {adminusername ? <li className="loginuser">Hello..{adminusername}
                         <ul className="loginuser-submenu">
-                          <li onClick={this.logout}>Logout</li>
+                          <li onClick={this.logoutAdmin}>Logout</li>
                         </ul>
                       </li> : <li><Link to="/login"> Login </Link> | <Link to="/register"> Sign up </Link> </li>
                   }             
@@ -84,7 +87,7 @@ class Header extends Component {
             loginUserData.push(
               <li className="loginuser">Hello..{username}
                 <ul className="loginuser-submenu">
-                  <li onClick={this.logout}>Logout</li>
+                  <li onClick={this.logoutUser}>Logout</li>
                 </ul>
               </li>
              );
@@ -148,7 +151,7 @@ class Header extends Component {
                     
                     {adminusername ? <li className="loginuser">Hello..{adminusername}
                           <ul className="loginuser-submenu">
-                            <li onClick={this.logout}>Logout</li>
+                            <li onClick={this.logoutAdmin}>Logout</li>
                           </ul>
                         </li> : <li><Link to="/login"> Login </Link> | <Link to="/register"> Sign up </Link> </li>
                     }             
@@ -179,7 +182,7 @@ class Header extends Component {
                     <li><Link to="/contact"> Contact us </Link></li>
                     {username ? <li className="loginuser">Hello..{username}
                           <ul className="loginuser-submenu">
-                            <li onClick={this.logout}>Logout</li>
+                            <li onClick={this.logoutUser}>Logout</li>
                           </ul>
                         </li> : <li><Link to="/login"> Login </Link> | <Link to="/register"> Sign up </Link> </li>
                     }             
@@ -213,7 +216,7 @@ class Header extends Component {
                 <li><Link to="/contact"> Contact us </Link></li>
                 {username ? <li className="loginuser">Hello..{username}
                       <ul className="loginuser-submenu">
-                        <li onClick={this.logout}>Logout</li>
+                        <li onClick={this.logoutUser}>Logout</li>
                       </ul>
                     </li> : <li><Link to="/login"> Login </Link> | <Link to="/register"> Sign up </Link> </li>
                 }             

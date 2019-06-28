@@ -37,7 +37,7 @@ class Blog extends Component {
   
   render() {
     const { blogs, error, isLoading } = this.state;
-    //console.log(blogs);
+    console.log(blogs);
     return (
       <div>
           <section className="banner-area relative blog-home-banner" id="home">	
@@ -122,7 +122,7 @@ class Blog extends Component {
                 <div className="col-lg-12 posts-list">
                       {!isLoading ? (
                         blogs.map(blog => {
-                          const { _id, title, description, blogimage } = blog;
+                          const { _id, title, blogname, description, blogimage } = blog;
                           return (
                             <div className="single-post row" key={_id}>
                               <div className="col-lg-3  col-md-3 meta-details">
@@ -135,9 +135,11 @@ class Blog extends Component {
                               </div>
                               <div className="col-lg-9 col-md-9 ">
                                 <div className="feature-img">
+                                <a href={"/blog/"+blogname}>
                                   <img className="img-fluid" src={"./images/"+blogimage} alt=""></img>
+                                </a>
                                 </div>
-                                <a className="posts-title" href="blog-single.html"><h3>{title}</h3></a>
+                                <a className="posts-title" href={"/blog/"+blogname}><h3>{title}</h3></a>
                                 <div className="excert">
                                   <ShowMoreText
                                       lines={3}

@@ -106,3 +106,8 @@ ul.header li a {
 .pagination .disabled a{
   color: #d3d3ba;
 }
+#serviceImage{
+  border-radius: 55px;
+  width: 100px;
+  height: 100px;
+}

@@ -27,12 +27,63 @@ exports.getSingleblog = async function(req, res)
     }
 };
 
+exports.getSingleblogByName = async function(req, res)
+{
+    console.log('all blog action');
+    try {
+        var blog = await blogModel.findOne({blogname: req.params.blogname}).populate('author').exec();
+        if(blog){
+            res.status(200).send(blog);
+        } else {
+            res.status(200).send({ message: 'Sorry, We can not found any data from our record!' });
+        }
+    } catch (error) {
+        res.status(500).send({ message: 'No data found!' });
+    }
+};
+
+exports.getRandomblog = async function(req, res)
+{
+    var count = 4;
+    try {
+        var mysort = { created_at: -1 };
+        var blog = await blogModel.find({blogname : {$ne :req.params.blogname}}).limit(4).sort(mysort).exec();
+        if(blog){
+            res.status(200).send(blog);
+        } else {
+            res.status(200).send({ message: 'Sorry, We can not found any data from our record!' });
+        }
+    } catch (error) {
+        res.status(500).send({ message: 'No data found!' });
+    }
+};
+
+
+
+
+
 exports.removeThumb = async function(req, res)
 {
     console.log('remove thumb');
     var id = req.body.id;
-    console.log(id);
+    //console.log(id);
     try {
+        var blogData = await blogModel.findById(id).exec();
+        if(blogData.blogimage){
+            var ImgParts = blogData.blogimage.split('.');
+            //console.log(ImgParts);
+            if(ImgParts){
+                var resized_big = ImgParts[0]+'_resized-big.png';
+                var resized_small = ImgParts[0]+'_resized-small.png';
+                var thumbnail = ImgParts[0]+'_thumbnail.png';
+
+                fs.unlinkSync(appRoot.path + "/client/public/images/"+resized_big);
+                fs.unlinkSync(appRoot.path + "/client/public/images/"+resized_small);
+                fs.unlinkSync(appRoot.path + "/client/public/images/"+thumbnail);
+            }
+            fs.unlinkSync(appRoot.path + "/client/public/images/"+blogData.blogimage);
+        }
+
         var blog = await blogModel.findOneAndUpdate(    
             { _id: id },      
             { $set: { blogimage: "" } },      
@@ -56,7 +107,7 @@ exports.insertblog = async function(req, res)
     req.body.author = userId;
     //console.log(userId);
     
-    console.log(req.body);
+    //console.log(req.body);
     if(req.body.blogimage !== '')
     {
         req.body.blogimage = req.file.filename;
@@ -66,10 +117,6 @@ exports.insertblog = async function(req, res)
         
         if(userId)
         { 
-            //var str = req.body.blogname;
-            /*str = str.replace(/\s+/g, '-').toLowerCase();
-            req.body.blogname = str;
-            console.log(req.body);*/
             var user = await userModel.findById(userId);
             var blog = new blogModel(req.body);
             //console.log(blog);
@@ -92,12 +139,11 @@ exports.insertblog = async function(req, res)
 exports.updateblog = async function(req, res)
 {
     console.log("update page action....");
-    //console.log(req.body);
+    console.log(req.body);
     //console.log(req.file);
-    
+    console.log(req);
     try {
         //console.log("update user Id ==>"+req.params.id);
-        console.log(req.body);
         
         if(req.file !== undefined){
             req.body.blogimage = '';
@@ -129,6 +175,16 @@ exports.deleteblog = async function(req, res)
         var blog = await blogModel.findById(req.params.id).exec();
         //console.log(blog);
         if(blog.blogimage){
+            var ImgParts = blog.blogimage.split('.');
+            if(ImgParts){
+                var resized_big = ImgParts[0]+'_resized-big.'+ImgParts[1];
+                var resized_small = ImgParts[0]+'_resized-small.'+ImgParts[1];
+                var thumbnail = ImgParts[0]+'_thumbnail.'+ImgParts[1];
+
+                fs.unlinkSync(appRoot.path + "/client/public/images/"+resized_big);
+                fs.unlinkSync(appRoot.path + "/client/public/images/"+resized_small);
+                fs.unlinkSync(appRoot.path + "/client/public/images/"+thumbnail);
+            }
             fs.unlinkSync(appRoot.path + "/client/public/images/"+blog.blogimage);
         }
 

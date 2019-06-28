@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import CKEditor from 'ckeditor4-react';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+//import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 
 class Setting extends Component {
@@ -11,10 +11,7 @@ class Setting extends Component {
         super(props);
         
         this.inputUpdate = this.inputUpdate.bind(this);
-        this.onEditorChange = this.onEditorChange.bind(this);
-
-        this.getCountryValue = this.getCountryValue.bind(this);
-		this.getRegionValue = this.getRegionValue.bind(this);
+        this.onEditorChange = this.onEditorChange.bind(this);       
         
         this.state = {
             id:'',
@@ -32,36 +29,8 @@ class Setting extends Component {
             instagramurl:'',
             footertext:'',
             file: '',
-            logoimage:'',
-            countrys: '', 
-            region: ''
+            logoimage:''
         }; 
-        this.state = {
-			countryArray: [
-				{
-                    list: () => {
-                        return (
-                            <div>
-                                <label>Country</label>
-                                <CountryDropdown className="common-input mb-20 form-control"
-                                    defaultOptionLabel="Select Country"
-                                    value={this.getCountryValue(0)}
-                                    onChange={(val) => this.selectCountry(0, val)}/>
-                                <label>Region</label>
-                                <RegionDropdown className="common-input mb-20 form-control"
-                                    blankOptionLabel="Select Region"
-                                    defaultOptionLabel="Now Select Region"
-                                    country={this.getCountryValue(0)}
-                                    value={this.getRegionValue(0)}
-                                    onChange={(val) => this.selectRegion(0, val)}/>
-                            </div>
-                        );
-                    }
-				}
-			]
-		};  
-        
-        
     }
 
     inputUpdate = e => {
@@ -161,39 +130,7 @@ class Setting extends Component {
             }
           });
       }
-    /****** For Country and region dropdown list *****/
-    selectCountry (countryArrayIndex, val) {
-        const updatedValues = this.state.countryArray;
-        updatedValues[countryArrayIndex].country = val;
-        this.setState({ countryArray: updatedValues });
-    }
-
-    selectRegion (countryArrayIndex, val) {
-        const updatedValues = this.state.countryArray;
-        updatedValues[countryArrayIndex].region = val;
-        this.setState({ countryArray: updatedValues });
-    }
-
-    getCountryValue (index) {
-        return this.state.countryArray[index].country;
-    }
-
-    getRegionValue (index) {
-        return this.state.countryArray[index].region;
-    }
-
-    getCountryRegionDropDown () {
-        let i = 0;
-        return this.state.countryArray.map((cntryRegnVal) => {
-            //let j = i++;
-            return (
-                <section key={i}>
-                    {cntryRegnVal.list()}
-                </section>
-            );
-        });
-    }
-    /*** End of country region logic ***/
+   
  
     render() {
         const { logoimage,  message} = this.state;
@@ -242,8 +179,6 @@ class Setting extends Component {
                 <label htmlFor="inputEmail">Country</label>
                 <input type="text" className="common-input mb-20 form-control" placeholder="Country" name="country" value={this.state.country} onChange={this.inputUpdate} required/>
                 
-                {this.getCountryRegionDropDown()}
-
                 <label htmlFor="inputEmail">Contact No</label>
                 <input type="text" className="common-input mb-20 form-control" placeholder="Contact No Ex. +1(647) 394-5595" name="contactno" value={this.state.contactno} onChange={this.inputUpdate} required/>
                 
@@ -271,9 +206,6 @@ class Setting extends Component {
                 <br/>
                 {imageDisp}
                 <br/> <br/>
-                <div>
-                {this.getCountryRegionDropDown()}
-							</div>
                 <button className="btn btn-lg btn-primary btn-block" type="submit">Save</button>
             </form>
             </div>

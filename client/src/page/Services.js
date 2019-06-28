@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ShowMoreText from 'react-show-more-text'; 
+import parse from 'html-react-parser';
 
 class Services extends Component {
   
@@ -65,20 +66,20 @@ class Services extends Component {
             <div className="row">
               {!isLoading ? (
                 services.map(service => {
-                  const { _id, title, description } = service;
+                  const { _id, title, servicesname, serviceimage, description } = service;
+                  
                   return (
                         <div className="col-lg-4 col-md-6" key={_id}>
                           <div className="single-services">
-                            <span className="lnr lnr-pie-chart"></span>
-                            <a href="#"><h4>{title}</h4></a>
-                            <div className="excert">
+                            <img id="serviceImage" src={"/images/"+serviceimage} alt={title} title={title}></img>
+                            <a href={"service/"+servicesname}><h4>{title}</h4></a>
+                            <div className="excert">                            
                             <ShowMoreText
-                                      lines={3}
-                                      more='Show more'
-                                      less='Show less'
+                                      lines={2}
+                                      more=''
+                                      less=''
                                       anchorClass=''>
-                                      {description}
-                                      
+                                      {parse(description)}
                             </ShowMoreText>
                             </div>
                           </div>

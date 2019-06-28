@@ -73,6 +73,12 @@ class Editblog extends Component {
         this.setState({
           title: e.target.value
         });
+        if(e.target.name === 'title'){
+            const modified_slug = e.target.value.replace(/\s+/g, '-').toLowerCase();
+            this.setState({
+                blogname: modified_slug
+            });
+        }
     }
     onChangeBlogname(e) {
         this.setState({
@@ -101,12 +107,13 @@ class Editblog extends Component {
         console.log(`${params.blogid}`);
         e.preventDefault();
         const formData = new FormData();
-        
-        if(!this.state.file){
-            //console.log(this.state.blogimage);
+        //console.log('===>'+this.state.file+this.state.blogimage);
+
+        if(this.state.file === null){
+            console.log('===='+this.state.blogimage);
             formData.append('blogimage',this.state.blogimage);
         } else {
-            //console.log('file');
+            console.log('file');
             formData.append('blogimage',this.state.file);
         }        
         formData.append('blogname',this.state.blogname);

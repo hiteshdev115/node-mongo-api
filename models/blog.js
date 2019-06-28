@@ -1,5 +1,6 @@
 // grab the things we need
 var mongoose = require('mongoose');
+
 var Schema = mongoose.Schema;
 
 var blogSchema = new Schema({
@@ -7,7 +8,10 @@ var blogSchema = new Schema({
   title: String,
   subtitle: String,
   description: String,
-  author: { type: String, required: true },
+  author: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   blogimage: String,
   isActive: Boolean,
   created_at: Date,
@@ -24,7 +28,7 @@ blogSchema.pre('save', function(next) {
       this.created_at = currentDate;
     next();
   });
-
+  
 // the schema is useless so far
 // we need to create a model using it
 var blog = mongoose.model('blog', blogSchema);
