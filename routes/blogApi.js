@@ -27,6 +27,20 @@ exports.getSingleblog = async function(req, res)
     }
 };
 
+exports.getLastThreeBlog = async function(req, res)
+{
+    console.log('Latest blog action');
+    try {
+        var mysort = { created_at: -1 };
+        var blog = await blogModel.find().populate('author').limit(3).sort(mysort).exec();
+        res.send(blog);
+    } catch (error) {
+        res.status(500).send({ message: 'No data found!' });
+    }
+};
+
+
+
 exports.getSingleblogByName = async function(req, res)
 {
     console.log('all blog action');
@@ -57,10 +71,6 @@ exports.getRandomblog = async function(req, res)
         res.status(500).send({ message: 'No data found!' });
     }
 };
-
-
-
-
 
 exports.removeThumb = async function(req, res)
 {
@@ -139,9 +149,9 @@ exports.insertblog = async function(req, res)
 exports.updateblog = async function(req, res)
 {
     console.log("update page action....");
-    console.log(req.body);
-    //console.log(req.file);
-    console.log(req);
+    //console.log(req.body);
+    console.log(req.file);
+    //console.log(req);
     try {
         //console.log("update user Id ==>"+req.params.id);
         

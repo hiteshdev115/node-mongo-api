@@ -2,19 +2,25 @@ import React, { Component } from "react";
 import axios from 'axios';
 import parse from 'html-react-parser';
 import dateFormat from 'dateformat';
+import { Facebook, Twitter } from 'react-sharingbuttons';
+import 'react-sharingbuttons/dist/main.css';
+
 
 class Blogdetails extends Component {
-  
+    
+
   constructor(props) {
     super(props)
     this.state = {
         blogs: [],
         id: '',
         title: '',
+        subtitle:'',
         blogname: '',
         description: '',
         blogimage: '',
         authorName:'',
+        created_at:'',
         error: null,
         isLoading: true
     }
@@ -30,8 +36,10 @@ class Blogdetails extends Component {
                 isLoading: false,
                 id:response.data._id,
                 title: response.data.title,
+                subtitle: response.data.subtitle,
                 blogname: response.data.blogname,
                 description: response.data.description,
+                created_at: response.data.created_at,
                 blogimage:response.data.blogimage,
                 authorName:response.data.author[0].name });
         })
@@ -54,22 +62,25 @@ class Blogdetails extends Component {
   }
   
   render() {
-    const { isLoading, blogs, error, title, description, blogimage } = this.state;
+    const url = 'http://www.google.com';
+    const shareText = 'Lightweight social sharing buttons for React. No tracking. Just fun.';
+    /*const tumblr = {
+      title: 'React Sharingbuttons',
+      caption: 'Lightweight social sharing buttons for React. No tracking. Just fun.',
+      content: url,
+    };*/
+  
+    const buttonsWrapperStyles = {
+      padding: 50,
+      marginTop: 75,
+      marginBottom: 100,
+    };
+    const { isLoading, blogs, error, title, subtitle, created_at, description, blogimage, authorName } = this.state;
     //console.log(error);
     return (
       <div>
         <section className="relative about-banner"> 
-            <div className="overlay overlay-bg"></div>
-            <div className="container">             
-                <div className="row d-flex align-items-center justify-content-center">
-                    <div className="about-content col-lg-12">
-                        <h1 className="text-white">
-                            Blog Details Page               
-                        </h1>   
-                        <p className="text-white link-nav"><a href="index.html">Home </a>  <span className="lnr lnr-arrow-right"></span><a href="blog-home.html">Blog </a> <span className="lnr lnr-arrow-right"></span> <a href="blog-single.html"> Blog Details Page</a></p>
-                    </div>  
-                </div>
-            </div>
+            &bnsp;
         </section>
         {error ? <p>{error.message}</p> : null}
         <section className="post-content-area single-post-area">
@@ -87,19 +98,18 @@ class Blogdetails extends Component {
                                     <li><a href="#">{title}</a></li>
                                 </ul>
                                 <div className="user-details row">
-                                    <p className="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span className="lnr lnr-user"></span></p>
-                                    <p className="date col-lg-12 col-md-12 col-6"><a href="#">12 Dec, 2017</a> <span className="lnr lnr-calendar-full"></span></p>
-                                    <p className="view col-lg-12 col-md-12 col-6"><a href="#">1.2M Views</a> <span className="lnr lnr-eye"></span></p>
-                                    <p className="comments col-lg-12 col-md-12 col-6"><a href="#">06 Comments</a> <span className="lnr lnr-bubble"></span></p>
-                                    <ul className="social-links col-lg-12 col-md-12 col-6">
-                                        <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i className="fa fa-twitter"></i></a></li>
+                                    <p className="user-name col-lg-12 col-md-12 col-6"><a href="#">{authorName}</a> <span className="lnr lnr-user"></span></p>
+                                    <p className="date col-lg-12 col-md-12 col-6"><a href="#">{dateFormat(created_at, "mediumDate")}</a> <span className="lnr lnr-calendar-full"></span></p>
+                                    <ul className="social-links col-lg-12 col-md-12 col-6" style={buttonsWrapperStyles}>
+                                        <li><Facebook url={url} /></li>
+                                        <li><Twitter url={url} shareText={shareText} /></li>
                                         <li><a href="#"><i className="fa fa-github"></i></a></li>
                                         <li><a href="#"><i className="fa fa-behance"></i></a></li>
                                     </ul>                                                                               
                                 </div>
                             </div>
                             <div className="col-lg-9 col-md-9">
+                            <h3 class="mt-20 mb-20">{subtitle}</h3>
                                 {parse(description)}
                             </div>
                         </div>

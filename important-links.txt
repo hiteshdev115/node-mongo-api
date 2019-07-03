@@ -24,3 +24,7 @@ https://mdbootstrap.com/docs/react/tables/pagination/
 For Image resizer
 ------------------
 https://github.com/mertdogar/multer-resizer
+
+For Social Share
+----------------
+https://reactjsexample.com/lightweight-social-sharing-buttons-for-react/

@@ -26,6 +26,8 @@ import AdminAddNewServiceComponent from "./page/adminpages/Addnewservice";
 import AdminEditServiceComponent from "./page/adminpages/Editservice";
 import AdminServiceDetailsComponent from "./page/Servicedetails";
 import AdminBlogDetailsComponent from "./page/Blogdetails";
+import AdminContactusComponent from "./page/Contactus";
+import AdminContactListComponent from "./page/adminpages/Contactlist";
 
 import AdminDatatableComponent from "./page/adminpages/DatatablePage";
 
@@ -67,6 +69,8 @@ class App extends Component {
             <Route exact path='/contact' component={ContactComponent}></Route>
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
+            <Route exact path='/contactus/' component={AdminContactusComponent}></Route>
+
             <Route exact path='/admin/dashboard' component={DashboardComponent}></Route>
             <Route exact path='/admin/blog-manage' component={AdminBlogListComponent}></Route>
             <Route exact path='/admin/addnewblog' component={AdminAddnewblogComponent}></Route>
@@ -76,8 +80,10 @@ class App extends Component {
             <Route exact path='/admin/service-manage' component={AdminServiceListComponent}></Route>
             <Route exact path='/admin/addnewservice' component={AdminAddNewServiceComponent}></Route>
             <Route exact path='/admin/service/edit/:serviceid' component={AdminEditServiceComponent}></Route>
+            <Route exact path='/admin/contactus-list' component={AdminContactListComponent}></Route>
             <Route exact path='/service/:servicesname' component={AdminServiceDetailsComponent}></Route>
             <Route exact path='/blog/:blogname' component={AdminBlogDetailsComponent}></Route>
+            
             
           </Switch>
           

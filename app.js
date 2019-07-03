@@ -120,7 +120,8 @@ var user = require('./routes/userApi');
 var cmspage = require('./routes/cmspageApi'); 
 var blog = require('./routes/blogApi'); 
 var services = require('./routes/servicesApi');
-var login = require('./routes/login'); 
+var login = require('./routes/login');
+var contact = require('./routes/contactApi');  
 var setting = require('./routes/settingApi'); 
 
 
@@ -147,15 +148,19 @@ app.get('/api/getSingleblog/:id', blog.getSingleblog);
 app.get('/api/blog/getRandomBlog/:blogname', blog.getRandomblog); 
 app.get('/api/getSingleBlogByName/:blogname', blog.getSingleblogByName); 
 app.post('/api/:id/addblog', resizer.single('blogimage'), blog.insertblog); 
+app.put('/api/:id/editblog/:blogid', upload.single('blogimage'), blog.updateblog); 
 app.put('/api/:id/updateblog/:blogid', resizer.single('blogimage'), blog.updateblog); 
 app.delete("/api/deleteblog/:id/user/:userId", blog.deleteblog);
 app.post("/api/removethumb/", blog.removeThumb);
+app.get('/api/getLastThreeBlog', blog.getLastThreeBlog); 
 
 
 app.get('/api/allservices', services.getallservices); 
 app.get('/api/getSingleService/:id', services.getSingleservice); 
+app.get('/api/blog/getRandomService/:servicesname', services.getRandomservice); 
 app.get('/api/getSingleServiceByName/:servicesname', services.getSingleserviceByName); 
 app.post('/api/:id/addservice', resizer.single('serviceimage'), services.insertservice); 
+app.put('/api/:id/editservice/:serviceid', upload.single('serviceimage'), services.updateservice); 
 app.put('/api/:id/updateservice/:serviceid', resizer.single('serviceimage'), services.updateservice); 
 app.delete("/api/deleteservice/:id/user/:userId", services.deleteservice);
 app.post("/api/service/removethumb/", services.removeThumb);
@@ -164,6 +169,11 @@ app.get('/api/getsetting', setting.getSetting);
 app.post('/api/savesetting', resizer.single('logoimage'), setting.insertSetting); 
 app.post('/api/updatesetting/', resizer.single('logoimage'), setting.updateSetting); 
 app.post("/api/removelogo/", setting.removeLogo);
+
+app.post("/api/contactus/", contact.insertContact);
+app.get("/api/allContact/", contact.allContact);
+app.delete("/api/deletecontact/:id", contact.deletecontact);
+
 
 app.set('port', process.env.PORT || 3001);
 app.listen(3001, () => {

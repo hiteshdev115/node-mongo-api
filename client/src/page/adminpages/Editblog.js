@@ -42,7 +42,9 @@ class Editblog extends Component {
                 blogname: response.data.blogname,
                 subtitle: response.data.subtitle,
                 description: response.data.description,
-                blogimage:response.data.blogimage });
+                blogimage:response.data.blogimage
+                //file:response.data.blogimage
+             });
         })
         .catch(error => this.setState({ error, isLoading: false }));
     }
@@ -105,17 +107,23 @@ class Editblog extends Component {
     onSubmit = (e) => {
         const { match: {params} } = this.props;
         console.log(`${params.blogid}`);
+
+        var loginuseid = this.state.adminLoginUser._id;
+        var url = '';
+
         e.preventDefault();
         const formData = new FormData();
         //console.log('===>'+this.state.file+this.state.blogimage);
 
         if(this.state.file === null){
-            console.log('===='+this.state.blogimage);
             formData.append('blogimage',this.state.blogimage);
+            url = 'http://localhost:3001/api/'+loginuseid+'/editblog/';
         } else {
-            console.log('file');
             formData.append('blogimage',this.state.file);
-        }        
+            url = 'http://localhost:3001/api/'+loginuseid+'/updateblog/';
+        } 
+        console.log(this.state.file);
+        console.log('===='+this.state.blogimage);       
         formData.append('blogname',this.state.blogname);
         formData.append('title',this.state.title);
         formData.append('subtitle',this.state.subtitle);
@@ -126,9 +134,6 @@ class Editblog extends Component {
                 'content-type': 'multipart/form-data'
             }
         };
-        
-        var loginuseid = this.state.adminLoginUser._id;
-        var url = 'http://localhost:3001/api/'+loginuseid+'/updateblog/';
         
         axios.put(url+`${params.blogid}`, formData, config)
           .then((result) => {

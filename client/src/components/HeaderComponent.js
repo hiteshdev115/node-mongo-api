@@ -63,7 +63,10 @@ class Header extends Component {
                       <li><Link to="/admin/user-manage"> User Management </Link></li>
                     </ul>
                   </li>
+                  
+                  <li><Link to="/admin/contactus-list"> Inquiry List </Link></li>
                   <li><Link to="/admin/settings"> Settings </Link></li>
+                  <li><Link to="/" target="_blank"> Go Website </Link></li>
                   
                   {adminusername ? <li className="loginuser">Hello..{adminusername}
                         <ul className="loginuser-submenu">
@@ -115,7 +118,7 @@ class Header extends Component {
                         <li>Service 2</li>
                       </ul>
                     </li>
-                    <li><Link to="/contact"> Contact us </Link></li>
+                    <li><Link to="/contactus"> Contact us </Link></li>
                     {loginUserData}
                   </ul>
                 </nav>		
@@ -147,7 +150,9 @@ class Header extends Component {
                         <li><Link to="/admin/user-manage"> User Management </Link></li>
                       </ul>
                     </li>
+                    <li><Link to="/admin/contactus-list"> Inquiry List </Link></li>
                     <li><Link to="/admin/settings"> Settings </Link></li>
+                    <li><Link to="/" target="_blank"> Go Website </Link></li>
                     
                     {adminusername ? <li className="loginuser">Hello..{adminusername}
                           <ul className="loginuser-submenu">
@@ -179,7 +184,7 @@ class Header extends Component {
                         <li>Service 2</li>
                       </ul>
                     </li>
-                    <li><Link to="/contact"> Contact us </Link></li>
+                    <li><Link to="/contactus"> Contact us </Link></li>
                     {username ? <li className="loginuser">Hello..{username}
                           <ul className="loginuser-submenu">
                             <li onClick={this.logoutUser}>Logout</li>
@@ -213,7 +218,7 @@ class Header extends Component {
                     <li>Service 2</li>
                   </ul>
                 </li>
-                <li><Link to="/contact"> Contact us </Link></li>
+                <li><Link to="/contactus"> Contact us </Link></li>
                 {username ? <li className="loginuser">Hello..{username}
                       <ul className="loginuser-submenu">
                         <li onClick={this.logoutUser}>Logout</li>

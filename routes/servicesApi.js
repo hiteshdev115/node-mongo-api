@@ -52,6 +52,22 @@ exports.getSingleserviceByName = async function(req, res)
     }
 };
 
+exports.getRandomservice = async function(req, res)
+{
+    var count = 4;
+    try {
+        var mysort = { created_at: -1 };
+        var service = await serviceModel.find({servicesname : {$ne :req.params.servicesname}}).limit(4).sort(mysort).exec();
+        if(service){
+            res.status(200).send(service);
+        } else {
+            res.status(200).send({ message: 'Sorry, We can not found any data from our record!' });
+        }
+    } catch (error) {
+        res.status(500).send({ message: 'No data found!' });
+    }
+};
+
 
 exports.removeThumb = async function(req, res)
 {

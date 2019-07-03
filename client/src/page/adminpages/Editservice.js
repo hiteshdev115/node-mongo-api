@@ -95,14 +95,20 @@ class Editservice extends Component {
         const { match: {params} } = this.props;
         console.log(`${params.serviceid}`);
         e.preventDefault();
+
+        var loginuseid = this.state.adminLoginUser._id;
+        var url = '';
+
         const formData = new FormData();
         
         if(!this.state.file){
             //console.log(this.state.blogimage);
             formData.append('serviceimage',this.state.serviceimage);
+            url = 'http://localhost:3001/api/'+loginuseid+'/editservice/';
         } else {
             //console.log('file');
             formData.append('serviceimage',this.state.file);
+            url = 'http://localhost:3001/api/'+loginuseid+'/updateservice/';
         }        
         formData.append('servicesname',this.state.servicesname);
         formData.append('title',this.state.title);
@@ -113,9 +119,6 @@ class Editservice extends Component {
                 'content-type': 'multipart/form-data'
             }
         };
-        
-        var loginuseid = this.state.adminLoginUser._id;
-        var url = 'http://localhost:3001/api/'+loginuseid+'/updateservice/';
         
         axios.put(url+`${params.serviceid}`, formData, config)
           .then((result) => {

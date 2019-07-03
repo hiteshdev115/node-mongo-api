@@ -26,7 +26,10 @@
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
     "react-scripts": "0.9.5",
-    "redux": "^4.0.1"
+    "react-share": "^3.0.0",
+    "react-sharingbuttons": "^1.0.0",
+    "redux": "^4.0.1",
+    "sendemail": "^3.4.0"
   },
   "devDependencies": {
     "node-sass-chokidar": "^1.2.2",

@@ -37,7 +37,7 @@ class Services extends Component {
   
   render() {
     const { services, error, isLoading } = this.state;
-    console.log(services);
+    //console.log(services);
     return (
       <div>
         <section className="about-banner">

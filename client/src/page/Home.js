@@ -1,7 +1,56 @@
 import React, { Component } from "react";
- 
+import ShowMoreText from 'react-show-more-text'; 
+import parse from 'html-react-parser'; 
+import axios from 'axios';
+import dateFormat from 'dateformat';
+
 class Home extends Component {
+
+	constructor() {
+	super()
+	this.state = {
+		services: [],
+		blogs:[],
+		error:null,
+		isLoading: true
+	}
+
+	}
+
+	componentDidMount() {
+
+	this.fetchAllServices();
+	this.getLatestBlog();
+
+	}
+
+	fetchAllServices() {
+	fetch('http://localhost:3001/api/allservices')
+		.then(response => response.json())
+		.then(data =>
+		this.setState({
+			isLoading: false,
+			services: data
+		})
+		)
+		.catch(error => this.setState({ error, isLoading: false }));
+	}
+
+	getLatestBlog = () => {
+		const url = 'http://localhost:3001/api/getLastThreeBlog/';
+		axios.get(url)
+			.then(response => {
+					this.setState({
+					  isLoading: false,
+					  blogs: response.data
+					})
+					console.log(response.data);		
+			})
+			.catch(error => this.setState({ error, isLoading: false }));  
+	  }
+
   render() {
+	const { services, blogs, error, isLoading } = this.state;
     return (  
 			<div>  
 				<section className="banner-area">
@@ -40,69 +89,41 @@ class Home extends Component {
 				</section>
 				<section className="services-area section-gap">
 					<div className="container">
-									<div className="row d-flex justify-content-center">
-											<div className="menu-content  col-lg-7">
-													<div className="title text-center">
-															<h1 className="mb-10">My Offered Services</h1>
-															<p>At about this time of year, some months after New Year’s resolutions have been made and kept, or made and neglected.</p>
-													</div>
-											</div>
-									</div>						
+						<div className="row d-flex justify-content-center">
+								<div className="menu-content  col-lg-7">
+										<div className="title text-center">
+												<h1 className="mb-10">My Offered Services</h1>
+												<p>At about this time of year, some months after New Year’s resolutions have been made and kept, or made and neglected.</p>
+										</div>
+								</div>
+						</div>						
 						<div className="row">
-							<div className="col-lg-4 col-md-6">
-								<div className="single-services">
-									<span className="lnr lnr-pie-chart"></span>
-									<a href="#"><h4>Web Design</h4></a>
-									<p>
-										“It is not because things are difficult that we do not dare; it is because we do not dare that they are difficult.”
-									</p>
-								</div>
-							</div>
-							<div className="col-lg-4 col-md-6">
-								<div className="single-services">
-									<span className="lnr lnr-laptop-phone"></span>
-									<a href="#"><h4>Web Development</h4></a>
-									<p>
-										If you are an entrepreneur, you know that your success cannot depend on the opinions of others. Like the wind, opinions.
-									</p>
-								</div>
-							</div>
-							<div className="col-lg-4 col-md-6">
-								<div className="single-services">
-									<span className="lnr lnr-camera"></span>
-									<a href="#"><h4>Photography</h4></a>
-									<p>
-										Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills.
-									</p>
-								</div>	
-							</div>
-							<div className="col-lg-4 col-md-6">
-								<div className="single-services">
-									<span className="lnr lnr-picture"></span>
-									<a href="#"><h4>Clipping Path</h4></a>
-									<p>
-										Hypnosis quit smoking methods maintain caused quite a stir in the medical world over the last two decades. There is a lot of argument.
-									</p>
-								</div>
-							</div>
-							<div className="col-lg-4 col-md-6">
-								<div className="single-services">
-									<span className="lnr lnr-tablet"></span>
-									<a href="#"><h4>Apps Interface</h4></a>
-									<p>
-										Do you sometimes have the feeling that you’re running into the same obstacles over and over again? Many of my conflicts.
-									</p>
-								</div>
-							</div>
-							<div className="col-lg-4 col-md-6">
-								<div className="single-services">
-									<span className="lnr lnr-rocket"></span>
-									<a href="#"><h4>Graphic Design</h4></a>
-									<p>
-										You’ve heard the expression, “Just believe it and it will come.” Well, technically, that is true, however, ‘believing’ is not just thinking that.
-									</p>
-								</div>				
-							</div>														
+							{error ? <p>{error.message}</p> : null}
+							{!isLoading ? (
+								services.map(service => {
+								const { _id, title, servicesname, serviceimage, description } = service;
+								
+								return (
+										<div className="col-lg-4 col-md-6" key={_id}>
+										<div className="single-services">
+											<img id="serviceImage" src={"/images/"+serviceimage} alt={title} title={title}></img>
+											<a href={"service/"+servicesname}><h4>{title}</h4></a>
+											<div className="excert">                            
+											<ShowMoreText
+													lines={2}
+													more=''
+													less=''
+													anchorClass=''>
+													{parse(description)}
+											</ShowMoreText>
+											</div>
+										</div>
+										</div>
+								);
+								}) 
+							) : (
+									<h3>Services should be appear in short time....</h3>
+							)}					
 						</div>
 					</div>	
 				</section>
@@ -310,75 +331,43 @@ class Home extends Component {
 							</div>
 						</div>
 						<div className="row">	
-							<div className="single-recent-blog col-lg-4 col-md-4">
-								<div className="thumb">
-									<img className="f-img img-fluid mx-auto" src="img/b1.jpg" alt=""></img>
-								</div>
-								<div className="bottom d-flex justify-content-between align-items-center flex-wrap">
-									<div>
-										<img className="img-fluid" src="img/user.png" alt=""></img>
-										<a href="#"><span>Mark Wiens</span></a>
+							{error ? <p>{error.message}</p> : null}
+							{!isLoading ? (
+								blogs.map(blog => {
+								const { _id, title, blogname, blogimage, description, created_at, author } = blog;
+								
+								return (
+									<div className="single-recent-blog col-lg-4 col-md-4" key={_id}>
+										<div className="thumb">
+											<img className="f-img img-fluid mx-auto" src={"/images/"+blogimage} alt={title} title={title}></img>
+										</div>
+										<div className="bottom d-flex justify-content-between align-items-center flex-wrap">
+											<div>
+												<img className="img-fluid" src="./images/user1.png" alt=""></img>
+												<a href="#"><span>{author[0].name}</span></a>
+											</div>
+											<div className="meta">
+												{dateFormat(created_at, "mediumDate")}
+											</div>
+										</div>							
+										<a href={"blog/"+blogname}>
+											<h4>{title}</h4>
+										</a>
+										<div>
+										<ShowMoreText
+												lines={2}
+												more=''
+												less=''
+												anchorClass=''>
+												{parse(description)}
+										</ShowMoreText>
+										</div>
 									</div>
-									<div className="meta">
-										13th Dec
-										<span className="lnr lnr-heart"></span> 15
-										<span className="lnr lnr-bubble"></span> 04
-									</div>
-								</div>							
-								<a href="#">
-									<h4>Break Through Self Doubt
-									And Fear</h4>
-								</a>
-								<p>
-									Dream interpretation has many forms; it can be done be done for the sake of fun, hobby or can be taken up as a serious career.
-								</p>
-							</div>
-							<div className="single-recent-blog col-lg-4 col-md-4">
-								<div className="thumb">
-									<img className="f-img img-fluid mx-auto" src="img/b2.jpg" alt=""></img>	
-								</div>
-								<div className="bottom d-flex justify-content-between align-items-center flex-wrap">
-									<div>
-										<img className="img-fluid" src="img/user.png" alt=""></img>
-										<a href="#"><span>Mark Wiens</span></a>
-									</div>
-									<div className="meta">
-										13th Dec
-										<span className="lnr lnr-heart"></span> 15
-										<span className="lnr lnr-bubble"></span> 04
-									</div>
-								</div>							
-								<a href="#">
-									<h4>Portable Fashion for
-									young women</h4>
-								</a>
-								<p>
-									You may be a skillful, effective employer but if you don’t trust your personnel and the opposite, then the chances of improving.
-								</p>
-							</div>
-							<div className="single-recent-blog col-lg-4 col-md-4">
-								<div className="thumb">
-									<img className="f-img img-fluid mx-auto" src="img/b3.jpg" alt=""></img>	
-								</div>
-								<div className="bottom d-flex justify-content-between align-items-center flex-wrap">
-									<div>
-										<img className="img-fluid" src="img/user.png" alt=""></img>
-										<a href="#"><span>Mark Wiens</span></a>
-									</div>
-									<div className="meta">
-										13th Dec
-										<span className="lnr lnr-heart"></span> 15
-										<span className="lnr lnr-bubble"></span> 04
-									</div>
-								</div>							
-								<a href="#">
-									<h4>Do Dreams Serve As
-									A Premonition</h4>
-								</a>
-								<p>
-									So many of us are demotivated to achieve anything. Such people are not enthusiastic about anything. They don’t want to work involved.
-								</p>
-							</div>							
+										);
+									}) 
+								) : (
+										<h3>Blog should be appear in short time....</h3>
+								)}
 						</div>
 					</div>	
 				</section>
