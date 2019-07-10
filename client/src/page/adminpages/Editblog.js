@@ -33,16 +33,21 @@ class Editblog extends Component {
         const { match: {params} } = this.props;
         //console.log(this.props);
         //console.log(`${params.blogid}`);
+        var active = '';
         var url = 'http://localhost:3001/api/getSingleblog/';
         axios.get(url+`${params.blogid}`)
         .then(response => {
+            if(response.data.isActive === true){
+                active = 'checked';
+            }
             this.setState({ 
                 id:response.data._id,
                 title: response.data.title,
                 blogname: response.data.blogname,
                 subtitle: response.data.subtitle,
                 description: response.data.description,
-                blogimage:response.data.blogimage
+                blogimage:response.data.blogimage,
+                isActive:active
                 //file:response.data.blogimage
              });
         })
@@ -51,16 +56,21 @@ class Editblog extends Component {
 
     unlinkThumb = () => {
         console.log('===Remove Thumb Action==>'+this.state.id);
+        var active = '';
         var url = 'http://localhost:3001/api/removethumb/';
         axios.post(url, {id:this.state.id})
         .then(response => {
+            if(response.data.isActive === true){
+                active = 'checked';
+            }
             this.setState({ 
                 id:response.data._id,
                 title: response.data.title,
                 blogname: response.data.blogname,
                 subtitle: response.data.subtitle,
                 description: response.data.description,
-                blogimage:'' });
+                blogimage:'',
+                isActive:active});
         })
         .catch(error => this.setState({ error }));
     }

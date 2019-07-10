@@ -147,3 +147,6 @@ ul.header li a {
 .alignment{
   text-align: center;
 }
+.react-sharing-button__text{
+  display: none;
+}

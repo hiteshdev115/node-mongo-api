@@ -117,6 +117,7 @@ var upload = multer({
 
 
 var user = require('./routes/userApi'); 
+var seo = require('./routes/seoApi'); 
 var cmspage = require('./routes/cmspageApi'); 
 var blog = require('./routes/blogApi'); 
 var services = require('./routes/servicesApi');
@@ -174,6 +175,13 @@ app.post("/api/contactus/", contact.insertContact);
 app.get("/api/allContact/", contact.allContact);
 app.delete("/api/deletecontact/:id", contact.deletecontact);
 
+
+app.get('/api/allseo', seo.getallseo); 
+app.get('/api/getSingleseo/:id', seo.getSingleseo); 
+app.post('/api/:id/addseo', seo.insertseo); 
+app.put('/api/:id/updateseo/:seoid', seo.updateseo); 
+app.delete("/api/deleteseo/:id/user/:userId", seo.deleteseo);
+app.get('/api/getSingleSeoByName/:pageUrl', seo.getSingleSeoByName); 
 
 app.set('port', process.env.PORT || 3001);
 app.listen(3001, () => {

@@ -103,7 +103,7 @@ class Bloglist extends Component {
     return (
           <div className="container list-space">
             <div className="section-top-border">
-                <h3 className="mb-30">Blogs</h3>
+                <h3 className="mb-30">Blog Management</h3>
                 <DataTable
                   className="pagination"
                   keys="hp123"

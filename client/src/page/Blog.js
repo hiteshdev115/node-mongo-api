@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import ShowMoreText from 'react-show-more-text'; 
 import parse from 'html-react-parser';
 
+import MetaTags from 'react-meta-tags';
+//import config from 'react-global-configuration';
+import axios from 'axios';
 
 class Blog extends Component {
   
@@ -10,15 +13,22 @@ class Blog extends Component {
     this.state = {
       blogs: [],
       error:null,
-      isLoading: true
+      isLoading: true,
+      
+      pageTitle:'',
+      pageUrl:'',
+      metaTitle:'',
+      metaDescription:'',
+      metaImageUrl:'',
+      index:'',
+      follow:'',
     }
-    
   }
 
+  
   componentDidMount() {
-    
-    this.fetchAllBlog();
-    
+    this.fetchAllBlog(); 
+    this.getSeoMetaData();
   }
 
   fetchAllBlog() {
@@ -32,14 +42,48 @@ class Blog extends Component {
       )
       .catch(error => this.setState({ error, isLoading: false }));
   }
+
+  getSeoMetaData = () => {
+    var cUrl = window.location.href;
+    console.log(cUrl);
+    const url = 'http://localhost:3001/api/getSingleSeoByName/';
+    axios.get(url+encodeURIComponent(cUrl))
+    .then(response => { 
+        console.log(response.data);
+        if(response.data){
+          this.setState({
+            pageTitle:response.data.pageTitle,
+            pageUrl:response.data.pageUrl,
+            metaTitle:response.data.metaTitle,
+            metaDescription:response.data.metaDescription,
+            metaImageUrl:response.data.metaImageUrl,
+            index:response.data.index,
+            follow:response.data.follow
+          })         
+        }        
+    });
+    }
   
   
   
-  render() {
-    const { blogs, error, isLoading } = this.state;
-    console.log(blogs);
+  render() {    
+    
+    const { blogs, error, isLoading, pageTitle, pageUrl, metaTitle, metaDescription, metaImageUrl, index, follow } = this.state;
+    //console.log(config.get('baseUrl'));
+    //console.log(this.props);
     return (
       <div>
+        
+          <MetaTags>
+                <title>{pageTitle}</title>
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="cleversamurai" />
+                <meta name="description"  content={metaDescription}/>
+                <meta property="og:title" content={metaTitle} />
+                <meta property="og:image" content={metaImageUrl} />
+                <meta property="og:url" content={pageUrl} />
+                <meta name="ROBOTS" content={index+', '+follow} />
+            </MetaTags>
           <section className="banner-area relative blog-home-banner" id="home">	
             <div className="overlay overlay-bg"></div>
             <div className="container">				

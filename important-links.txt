@@ -28,3 +28,11 @@ https://github.com/mertdogar/multer-resizer
 For Social Share
 ----------------
 https://reactjsexample.com/lightweight-social-sharing-buttons-for-react/
+
+For React Meta-tags manage
+--------------------------
+https://www.npmjs.com/package/react-meta-tags
+
+Make Global Congig for use in any where in any components(You can set in App.js and get any place where you want)
+-----------------------------------------------------------------------------------------------------------------
+https://www.npmjs.com/package/react-global-configuration

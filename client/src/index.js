@@ -9,10 +9,11 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbreact/dist/css/mdb.css';
 //import "./assets/scss/mdb.scss"
 
-
 import App from './App';
 
 import './index.css';
+
+
 
 ReactDOM.render(
   <App />,

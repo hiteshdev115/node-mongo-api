@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import './App.css';
 import "./style.css";
 
+
 import {
   BrowserRouter as Router,
   Route,
   Switch
 } from "react-router-dom";
+
 
 import HomeComponent from "./page/Home";
 import BlogComponent from "./page/Blog";
@@ -28,6 +30,9 @@ import AdminServiceDetailsComponent from "./page/Servicedetails";
 import AdminBlogDetailsComponent from "./page/Blogdetails";
 import AdminContactusComponent from "./page/Contactus";
 import AdminContactListComponent from "./page/adminpages/Contactlist";
+import AdminSeoListComponent from "./page/adminpages/Seolist";
+import AdminAddNewSeoComponent from "./page/adminpages/Addnewseo";
+import AdminEditSeoComponent from "./page/adminpages/Editseo";
 
 import AdminDatatableComponent from "./page/adminpages/DatatablePage";
 
@@ -37,27 +42,16 @@ import DashboardComponent from "./page/dashboard";
 import Login from './page/Login';
 import Register from './page/Register';
 
+
+
 class App extends Component {
   
-  render() {
-    this.state = {
-      loginUserData: JSON.parse(localStorage.getItem('userdetails'))
-    }
-    //console.log('=====>'+props);
-    //var adminusername = '';
-    /*var checkAdmin = '';
-    if(this.state.loginUserData === null){
-      //adminusername = '';
-    } else {
-      //adminusername = this.state.loginUserData.name;
-      
-      checkAdmin = this.state.loginUserData.admin;
+  
 
-    }*/
+  render() { 
     
-    
-    
-    return (
+    return (     
+      
       <Router>
         <div>
           <HeaderComponent></HeaderComponent>
@@ -83,6 +77,9 @@ class App extends Component {
             <Route exact path='/admin/contactus-list' component={AdminContactListComponent}></Route>
             <Route exact path='/service/:servicesname' component={AdminServiceDetailsComponent}></Route>
             <Route exact path='/blog/:blogname' component={AdminBlogDetailsComponent}></Route>
+            <Route exact path='/admin/seo-manage/' component={AdminSeoListComponent}></Route>
+            <Route exact path='/admin/addnewseo/' component={AdminAddNewSeoComponent}></Route>
+            <Route exact path='/admin/editseo/:seoid' component={AdminEditSeoComponent}></Route>
             
             
           </Switch>

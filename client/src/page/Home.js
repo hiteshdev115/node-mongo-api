@@ -3,25 +3,32 @@ import ShowMoreText from 'react-show-more-text';
 import parse from 'html-react-parser'; 
 import axios from 'axios';
 import dateFormat from 'dateformat';
+import MetaTags from 'react-meta-tags';
 
 class Home extends Component {
 
 	constructor() {
-	super()
-	this.state = {
-		services: [],
-		blogs:[],
-		error:null,
-		isLoading: true
-	}
+		super()
+		this.state = {
+			services: [],
+			blogs:[],
+			error:null,
+			isLoading: true,
 
+			pageTitle:'',
+			pageUrl:'',
+			metaTitle:'',
+			metaDescription:'',
+			metaImageUrl:'',
+			index:'',
+      		follow:''
+		}
 	}
 
 	componentDidMount() {
-
-	this.fetchAllServices();
-	this.getLatestBlog();
-
+		this.fetchAllServices();
+		this.getLatestBlog();
+		this.getSeoMetaData();
 	}
 
 	fetchAllServices() {
@@ -47,12 +54,43 @@ class Home extends Component {
 					console.log(response.data);		
 			})
 			.catch(error => this.setState({ error, isLoading: false }));  
-	  }
+	}
+
+	getSeoMetaData = () => {
+		var cUrl = window.location.href;
+		console.log(cUrl);
+		const url = 'http://localhost:3001/api/getSingleSeoByName/';
+		axios.get(url+encodeURIComponent(cUrl))
+		.then(response => { 
+			console.log(response.data);
+			if(response.data){
+			  this.setState({
+				pageTitle:response.data.pageTitle,
+				pageUrl:response.data.pageUrl,
+				metaTitle:response.data.metaTitle,
+				metaDescription:response.data.metaDescription,
+				metaImageUrl:response.data.metaImageUrl,
+				index:response.data.index,
+        		follow:response.data.follow
+			  })         
+			}        
+		});
+	}
 
   render() {
-	const { services, blogs, error, isLoading } = this.state;
+	const { services, blogs, error, isLoading, pageTitle, pageUrl, metaTitle, metaDescription, metaImageUrl, index, follow } = this.state;
     return (  
-			<div>  
+			<div> 
+				<MetaTags>
+					<title>{pageTitle}</title>
+					<meta property="og:type" content="website" />
+					<meta property="og:site_name" content="cleversamurai" />
+					<meta name="description"  content={metaDescription}/>
+					<meta property="og:title" content={metaTitle} />
+					<meta property="og:image" content={metaImageUrl} />
+					<meta property="og:url" content={pageUrl} />
+					<meta name="ROBOTS" content={index+', '+follow} />
+            	</MetaTags> 
 				<section className="banner-area">
 					<div className="container">
 						<div className="row fullscreen align-items-center justify-content-between">

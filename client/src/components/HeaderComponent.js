@@ -1,11 +1,11 @@
 import React, { Component }  from 'react';
 import { Link } from 'react-router-dom'
 //import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
-
+//import axios from 'axios';
 
 class Header extends Component {
   
-    
+  
   logoutAdmin() {
     localStorage.removeItem('admin-jwtToken');
     localStorage.removeItem('admin-userdetails');
@@ -61,6 +61,7 @@ class Header extends Component {
                       <li><Link to="/admin/blog-manage"> Blog Management </Link></li>
                       <li><Link to="/admin/service-manage"> Services Management </Link></li>
                       <li><Link to="/admin/user-manage"> User Management </Link></li>
+                      <li><Link to="/admin/seo-manage"> SEO Management </Link></li>
                     </ul>
                   </li>
                   
@@ -148,6 +149,7 @@ class Header extends Component {
                         <li><Link to="/admin/blog-manage"> Blog Management </Link></li>
                         <li><Link to="/admin/service-manage"> Services Management </Link></li>
                         <li><Link to="/admin/user-manage"> User Management </Link></li>
+                        <li><Link to="/admin/seo-manage"> SEO Management </Link></li>
                       </ul>
                     </li>
                     <li><Link to="/admin/contactus-list"> Inquiry List </Link></li>

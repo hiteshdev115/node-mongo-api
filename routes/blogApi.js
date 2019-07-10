@@ -7,7 +7,7 @@ var userModel = require('../models/user');
 
 exports.getallblog = async function(req, res)
 {
-    console.log('all blog action');
+    console.log('all seo action');
     try {
         var result = await blogModel.find().exec();
         res.send(result);

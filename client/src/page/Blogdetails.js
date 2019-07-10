@@ -4,7 +4,8 @@ import parse from 'html-react-parser';
 import dateFormat from 'dateformat';
 import { Facebook, Twitter } from 'react-sharingbuttons';
 import 'react-sharingbuttons/dist/main.css';
-
+import MetaTags from 'react-meta-tags';
+//import config from 'react-global-configuration';
 
 class Blogdetails extends Component {
     
@@ -62,14 +63,14 @@ class Blogdetails extends Component {
   }
   
   render() {
-    const url = 'http://www.google.com';
+    const url = '';//config.get('hkp');
     const shareText = 'Lightweight social sharing buttons for React. No tracking. Just fun.';
     /*const tumblr = {
       title: 'React Sharingbuttons',
       caption: 'Lightweight social sharing buttons for React. No tracking. Just fun.',
       content: url,
     };*/
-  
+    //console.log("Current Url===>"+url);
     const buttonsWrapperStyles = {
       padding: 50,
       marginTop: 75,
@@ -84,6 +85,15 @@ class Blogdetails extends Component {
         </section>
         {error ? <p>{error.message}</p> : null}
         <section className="post-content-area single-post-area">
+            <MetaTags>
+                <title>Cleversmaurai</title>
+                <meta property="og:type" content="website" />
+                <meta name="description" content="Some description." />
+                <meta property="og:title" content="MyApp" />
+                <meta property="og:image" content={"/images/"+blogimage} />
+                <meta property="og:url" content={url} />
+                <meta property="og:site_name" content="Cleversamurai" />
+            </MetaTags>
             <div className="container">
                 <div className="row">
                     <div className="col-lg-8 posts-list">
@@ -101,15 +111,15 @@ class Blogdetails extends Component {
                                     <p className="user-name col-lg-12 col-md-12 col-6"><a href="#">{authorName}</a> <span className="lnr lnr-user"></span></p>
                                     <p className="date col-lg-12 col-md-12 col-6"><a href="#">{dateFormat(created_at, "mediumDate")}</a> <span className="lnr lnr-calendar-full"></span></p>
                                     <ul className="social-links col-lg-12 col-md-12 col-6" style={buttonsWrapperStyles}>
-                                        <li><Facebook url={url} /></li>
+                                        <li><Facebook url={url} text="This isText" /></li>
                                         <li><Twitter url={url} shareText={shareText} /></li>
-                                        <li><a href="#"><i className="fa fa-github"></i></a></li>
+                                        <li></li>
                                         <li><a href="#"><i className="fa fa-behance"></i></a></li>
                                     </ul>                                                                               
                                 </div>
                             </div>
                             <div className="col-lg-9 col-md-9">
-                            <h3 class="mt-20 mb-20">{subtitle}</h3>
+                            <h3 className="mt-20 mb-20">{subtitle}</h3>
                                 {parse(description)}
                             </div>
                         </div>
