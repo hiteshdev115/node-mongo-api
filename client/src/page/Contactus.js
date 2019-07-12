@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import MetaTags from 'react-meta-tags';
+import Seo from '../page/SeoMeatData';
 
 class Contactus extends Component {
   
@@ -11,42 +11,9 @@ class Contactus extends Component {
       email:'',
       subject:'',
       message:'',
-      successmessage:'',
-
-      pageTitle:'',
-			pageUrl:'',
-			metaTitle:'',
-			metaDescription:'',
-			metaImageUrl:'',
-			index:'',
-      follow:''
+      successmessage:''
     }
   }
-
-  componentDidMount() {
-    this.getSeoMetaData();
-  }
-
-  getSeoMetaData = () => {
-		var cUrl = window.location.href;
-		console.log(cUrl);
-		const url = 'http://localhost:3001/api/getSingleSeoByName/';
-		axios.get(url+encodeURIComponent(cUrl))
-		.then(response => { 
-			console.log(response.data);
-			if(response.data){
-			  this.setState({
-				pageTitle:response.data.pageTitle,
-				pageUrl:response.data.pageUrl,
-				metaTitle:response.data.metaTitle,
-				metaDescription:response.data.metaDescription,
-				metaImageUrl:response.data.metaImageUrl,
-				index:response.data.index,
-        follow:response.data.follow
-			  })         
-			}        
-		});
-	}
 
   onChange = (e) => {
     const state = this.state
@@ -87,19 +54,10 @@ class Contactus extends Component {
   
   
   render() {
-    const { customername, email, subject, message, successmessage, pageTitle, pageUrl, metaTitle, metaDescription, metaImageUrl, index, follow } = this.state;
+    const { customername, email, subject, message, successmessage } = this.state;
     return (
       <div>
-        <MetaTags>
-					<title>{pageTitle}</title>
-					<meta property="og:type" content="website" />
-					<meta property="og:site_name" content="cleversamurai" />
-					<meta name="description"  content={metaDescription}/>
-					<meta property="og:title" content={metaTitle} />
-					<meta property="og:image" content={metaImageUrl} />
-					<meta property="og:url" content={pageUrl} />
-					<meta name="ROBOTS" content={index+', '+follow} />
-        </MetaTags> 
+        <Seo/>					
         <section className="relative about-banner">	
 				<div className="overlay overlay-bg"><img className="banner" src={"/images/contact-us-banner.jpg"} alt=""></img></div>
 				<div className="container">				

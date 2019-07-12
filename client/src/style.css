@@ -150,3 +150,30 @@ ul.header li a {
 .react-sharing-button__text{
   display: none;
 }
+.btn-color{
+  background-color: #0b51c5!important;
+  color:white!important;
+}
+.remove-padding{
+  padding: 20px 20px;
+  background-color: #af8f8f2b;
+}
+.seo-radio{
+  margin: 10px;
+}
+.align{
+  text-align: right;
+  width: 100%;
+}
+.close-button{
+  text-align: right;
+  margin-bottom: 10px;
+}
+.close-button button{
+  border-radius: 20px;
+  background-color: #1f91f2;
+  border: 0;
+}
+.cursor{
+  cursor: pointer;
+}

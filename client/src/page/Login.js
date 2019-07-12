@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-//import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-//import config from 'react-global-configuration';
-//import './Login.css';
-import MetaTags from 'react-meta-tags';
+import Seo from '../page/SeoMeatData';
 
 class Login extends Component {
 
@@ -13,15 +10,7 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      message: '',
-
-      pageTitle:'',
-			pageUrl:'',
-			metaTitle:'',
-			metaDescription:'',
-      metaImageUrl:'',
-      index:'',
-      follow:''
+      message: ''
     };
     
     this.checkLogin();
@@ -41,31 +30,7 @@ class Login extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getSeoMetaData();
-  }
-
-  getSeoMetaData = () => {
-		var cUrl = window.location.href;
-		console.log(cUrl);
-		const url = 'http://localhost:3001/api/getSingleSeoByName/';
-		axios.get(url+encodeURIComponent(cUrl))
-		.then(response => { 
-			console.log(response.data);
-			if(response.data){
-			  this.setState({
-				pageTitle:response.data.pageTitle,
-				pageUrl:response.data.pageUrl,
-				metaTitle:response.data.metaTitle,
-				metaDescription:response.data.metaDescription,
-        metaImageUrl:response.data.metaImageUrl,
-        index:response.data.index,
-        follow:response.data.follow
-			  })         
-			}        
-		});
-	}
-  
+    
   onChange = (e) => {
     const state = this.state
     state[e.target.name] = e.target.value;
@@ -105,20 +70,11 @@ class Login extends Component {
   }
 
   render() {
-    const { username, password, message, pageTitle, pageUrl, metaTitle, metaDescription, metaImageUrl, index, follow  } = this.state;
+    const { username, password, message } = this.state;
     
     return (
       <div>
-        <MetaTags>
-          <title>{pageTitle}</title>
-          <meta property="og:type" content="website" />
-          <meta property="og:site_name" content="cleversamurai" />
-          <meta name="description"  content={metaDescription}/>
-          <meta property="og:title" content={metaTitle} />
-          <meta property="og:image" content={metaImageUrl} />
-          <meta property="og:url" content={pageUrl} />
-          <meta name="ROBOTS" content={index+', '+follow} />
-        </MetaTags> 
+        <Seo />
         <section className="post-content-area section-gap">
           <div className="container">
             <form className="form-signin" onSubmit={this.onSubmit}>

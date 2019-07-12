@@ -3,7 +3,22 @@ import ShowMoreText from 'react-show-more-text';
 import parse from 'html-react-parser'; 
 import axios from 'axios';
 import dateFormat from 'dateformat';
-import MetaTags from 'react-meta-tags';
+import Seo from '../page/SeoMeatData';
+import Modal from 'react-modal';
+
+const customStyles = {
+	content : {
+	  top                   : '50%',
+	  left                  : '50%',
+	  right                 : 'auto',
+	  bottom                : 'auto',
+	  marginRight           : '-50%',
+	  transform             : 'translate(-50%, -50%)',
+	  background			: 'rgb(240, 241, 246)'
+	}
+  };
+
+Modal.setAppElement('body')
 
 class Home extends Component {
 
@@ -12,23 +27,20 @@ class Home extends Component {
 		this.state = {
 			services: [],
 			blogs:[],
+			projects:[],
 			error:null,
 			isLoading: true,
-
-			pageTitle:'',
-			pageUrl:'',
-			metaTitle:'',
-			metaDescription:'',
-			metaImageUrl:'',
-			index:'',
-      		follow:''
+			modalIsOpen: false,
+			modalPreviewImage:'',
 		}
+		this.openModal = this.openModal.bind(this);
+		this.closeModal = this.closeModal.bind(this);
 	}
 
 	componentDidMount() {
 		this.fetchAllServices();
 		this.getLatestBlog();
-		this.getSeoMetaData();
+		this.getLatestSixProjects();
 	}
 
 	fetchAllServices() {
@@ -56,41 +68,39 @@ class Home extends Component {
 			.catch(error => this.setState({ error, isLoading: false }));  
 	}
 
-	getSeoMetaData = () => {
-		var cUrl = window.location.href;
-		console.log(cUrl);
-		const url = 'http://localhost:3001/api/getSingleSeoByName/';
-		axios.get(url+encodeURIComponent(cUrl))
-		.then(response => { 
-			console.log(response.data);
-			if(response.data){
-			  this.setState({
-				pageTitle:response.data.pageTitle,
-				pageUrl:response.data.pageUrl,
-				metaTitle:response.data.metaTitle,
-				metaDescription:response.data.metaDescription,
-				metaImageUrl:response.data.metaImageUrl,
-				index:response.data.index,
-        		follow:response.data.follow
-			  })         
-			}        
+	getLatestSixProjects = () => {
+		const url = 'http://localhost:3001/api/getLastSixProject/';
+		axios.get(url)
+			.then(response => {
+					this.setState({
+					  isLoading: false,
+					  projects: response.data
+					})
+					console.log(response.data);		
+			})
+			.catch(error => this.setState({ error, isLoading: false }));  
+	}
+
+	openModal(projectimage='') {
+		this.setState({
+			modalIsOpen: true,
+			modalPreviewImage:projectimage
+		});
+	}
+	
+	closeModal() {
+		this.setState({
+			modalIsOpen: false,
+			modalPreviewImage:''
 		});
 	}
 
+	
   render() {
-	const { services, blogs, error, isLoading, pageTitle, pageUrl, metaTitle, metaDescription, metaImageUrl, index, follow } = this.state;
+	const { services, blogs, projects, error, isLoading } = this.state;
     return (  
 			<div> 
-				<MetaTags>
-					<title>{pageTitle}</title>
-					<meta property="og:type" content="website" />
-					<meta property="og:site_name" content="cleversamurai" />
-					<meta name="description"  content={metaDescription}/>
-					<meta property="og:title" content={metaTitle} />
-					<meta property="og:image" content={metaImageUrl} />
-					<meta property="og:url" content={pageUrl} />
-					<meta name="ROBOTS" content={index+', '+follow} />
-            	</MetaTags> 
+				<Seo />
 				<section className="banner-area">
 					<div className="container">
 						<div className="row fullscreen align-items-center justify-content-between">
@@ -189,135 +199,66 @@ class Home extends Component {
 				</section>
 				<section className="portfolio-area section-gap" id="portfolio">
 					<div className="container">
-							<div className="row d-flex justify-content-center">
-									<div className="menu-content pb-70 col-lg-8">
-											<div className="title text-center">
-													<h1 className="mb-10">Our Latest Featured Projects</h1>
-													<p>Who are in extremely love with eco friendly system.</p>
-											</div>
-									</div>
+						<div className="row d-flex justify-content-center">
+							<div className="menu-content pb-70 col-lg-8">
+								<div className="title text-center">
+									<h1 className="mb-10">Our Latest Featured Projects</h1>
+									<p>Who are in extremely love with eco friendly system.</p>
+								</div>
 							</div>
-
-							<div className="filters">
-									<ul>
-											<li className="active" data-filter="*">All</li>
-											<li data-filter=".vector">Vector</li>
-											<li data-filter=".raster">Raster</li>
-											<li data-filter=".ui">UI/UX</li>
-											<li data-filter=".printing">Printing</li>
-									</ul>
+						</div>	
+						
+						<Modal
+							isOpen={this.state.modalIsOpen}
+							onAfterOpen={this.afterOpenModal}
+							onRequestClose={this.closeModal}
+							style={customStyles}
+							contentLabel="Preview Modal">
+					
+							
+							<div className="close-button">
+								<button onClick={this.closeModal}>X</button>
 							</div>
-
-							<div className="filters-content">
-									<div className="row grid">
-											<div className="single-portfolio col-sm-4 all vector">
-													<div className="relative">
-															<div className="thumb">
-																	<div className="overlay overlay-bg"></div>
-																	<img className="image img-fluid" src="img/p1.jpg" alt=""></img>
-															</div>
-															<a href="img/p1.jpg" className="img-pop-up">
-																	<div className="middle">
-																			<div className="text align-self-center d-flex"><img src="img/preview.png" alt=""></img></div>
-																	</div>
-															</a>
-													</div>
-													<div className="p-inner">
-															<h4>2D Vinyl Design</h4>
-															<div className="cat">vector</div>
-													</div>
-											</div>
-											<div className="single-portfolio col-sm-4 all raster">
-													<div className="relative">
-															<div className="thumb">
-																	<div className="overlay overlay-bg"></div>
-																	<img className="image img-fluid" src="img/p2.jpg" alt=""></img>
-															</div>
-															<a href="img/p2.jpg" className="img-pop-up">
-																	<div className="middle">
-																			<div className="text align-self-center d-flex"><img src="img/preview.png" alt=""></img></div>
-																	</div>
-															</a>
-													</div>
-													<div className="p-inner">
-															<h4>2D Vinyl Design</h4>
-															<div className="cat">vector</div>
-													</div>
-											</div>
-											<div className="single-portfolio col-sm-4 all ui">
-													<div className="relative">
-															<div className="thumb">
-																	<div className="overlay overlay-bg"></div>
-																	<img className="image img-fluid" src="img/p3.jpg" alt=""></img>
-															</div>
-															<a href="img/p3.jpg" className="img-pop-up">
-																	<div className="middle">
-																			<div className="text align-self-center d-flex"><img src="img/preview.png" alt=""></img></div>
-																	</div>
-															</a>
-
-													</div>
-													<div className="p-inner">
-															<h4>Creative Poster Design</h4>
-															<div className="cat">Agency</div>
-													</div>
-											</div>
-											<div className="single-portfolio col-sm-4 all printing">
-													<div className="relative">
-															<div className="thumb">
-																	<div className="overlay overlay-bg"></div>
-																	<img className="image img-fluid" src="img/p4.jpg" alt=""></img>
-															</div>
-															<a href="img/p4.jpg" className="img-pop-up">
-																	<div className="middle">
-																			<div className="text align-self-center d-flex"><img src="img/preview.png" alt=""></img></div>
-																	</div>
-															</a>
-													</div>
-													<div className="p-inner">
-															<h4>Embosed Logo Design</h4>
-															<div className="cat">Portal</div>
-													</div>
-											</div>
-											<div className="single-portfolio col-sm-4 all vector">
-													<div className="relative">
-															<div className="thumb">
-																	<div className="overlay overlay-bg"></div>
-																	<img className="image img-fluid" src="img/p5.jpg" alt=""></img>
-															</div>
-															<a href="img/p5.jpg" className="img-pop-up">
-																	<div className="middle">
-																			<div className="text align-self-center d-flex"><img src="img/preview.png" alt=""></img></div>
-																	</div>
-															</a>
-													</div>
-													<div className="p-inner">
-															<h4>3D Helmet Design</h4>
-															<div className="cat">vector</div>
-													</div>
-											</div>
-											<div className="single-portfolio col-sm-4 all raster">
-													<div className="relative">
-															<div className="thumb">
-																	<div className="overlay overlay-bg"></div>
-																	<img className="image img-fluid" src="img/p6.jpg" alt=""></img>
-															</div>
-															<a href="img/p6.jpg" className="img-pop-up">
-																	<div className="middle">
-																			<div className="text align-self-center d-flex"><img src="img/preview.png" alt=""></img></div>
-																	</div>
-															</a>
-													</div>
-													<div className="p-inner">
-															<h4>2D Vinyl Design</h4>
-															<div className="cat">raster</div>
-													</div>
-											</div>
-									</div>
+							<div className="preview-img">
+								<img src={"/images/"+this.state.modalPreviewImage} alt="preview" />
 							</div>
+							</Modal>
 
+						<div className="filters-content" id="portfolio-section">
+							<div className="row">
+								{error ? <p>{error.message}</p> : null}
+								{!isLoading ? (
+									projects.map(project => {
+									const { _id, title, category, projectimage } = project;											
+									return (										
+										<div className="single-portfolio col-sm-4" key={_id}>
+											<div className="relative">
+												<div className="thumb">
+													<div className="overlay overlay-bg"></div>
+													<img className="image img-fluid" src={"/images/"+projectimage} alt={title} title={title}></img>
+												</div>												
+												<div className="middle cursor" onClick={() => this.openModal(projectimage)}>
+													<div className="text align-self-center d-flex"><img src="img/preview.png" alt=""></img></div>
+												</div>												
+											</div>
+											<div className="p-inner">
+												<h4>{title}</h4>
+												<div className="cat">{category}</div>
+											</div>
+										</div>
+										
+									);
+									}) 
+								) : (
+										<h3>Portfolio should be appear in short time....</h3>
+								)}
+								<div className="align">
+									<a href="/portfolio" className="btn btn-default" type="submit">View All <span className="lnr lnr-arrow-right"></span></a>
+								</div>
+							</div>
+						</div>
 					</div>
-        </section>
+        		</section>
 				<section className="testimonial-area section-gap">
 		        <div className="container">
 		            <div className="row d-flex justify-content-center">

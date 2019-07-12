@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import ShowMoreText from 'react-show-more-text'; 
 import parse from 'html-react-parser';
-import axios from 'axios';
-import MetaTags from 'react-meta-tags';
+import Seo from '../page/SeoMeatData';
 
 class Services extends Component {
   
@@ -11,21 +10,12 @@ class Services extends Component {
     this.state = {
       services: [],
       error:null,
-      isLoading: true,
-
-      pageTitle:'',
-			pageUrl:'',
-			metaTitle:'',
-			metaDescription:'',
-      metaImageUrl:'',
-      index:'',
-      follow:''
+      isLoading: true
     } 
   }
 
   componentDidMount() {
     this.fetchAllServices();
-    this.getSeoMetaData();
   }
 
   fetchAllServices() {
@@ -39,43 +29,13 @@ class Services extends Component {
       )
       .catch(error => this.setState({ error, isLoading: false }));
   }
-  
-  getSeoMetaData = () => {
-		var cUrl = window.location.href;
-		console.log(cUrl);
-		const url = 'http://localhost:3001/api/getSingleSeoByName/';
-		axios.get(url+encodeURIComponent(cUrl))
-		.then(response => { 
-			console.log(response.data);
-			if(response.data){
-			  this.setState({
-				pageTitle:response.data.pageTitle,
-				pageUrl:response.data.pageUrl,
-				metaTitle:response.data.metaTitle,
-				metaDescription:response.data.metaDescription,
-        metaImageUrl:response.data.metaImageUrl,
-        index:response.data.index,
-        follow:response.data.follow
-			  })         
-			}        
-		});
-	}
-  
+    
   render() {
-    const { services, error, isLoading, pageTitle, pageUrl, metaTitle, metaDescription, metaImageUrl, index, follow  } = this.state;
+    const { services, error, isLoading } = this.state;
     //console.log(services);
     return (
       <div>
-        <MetaTags>
-					<title>{pageTitle}</title>
-					<meta property="og:type" content="website" />
-					<meta property="og:site_name" content="cleversamurai" />
-					<meta name="description"  content={metaDescription}/>
-					<meta property="og:title" content={metaTitle} />
-					<meta property="og:image" content={metaImageUrl} />
-					<meta property="og:url" content={pageUrl} />
-          <meta name="ROBOTS" content={index+', '+follow} />
-        </MetaTags> 
+        <Seo /> 
         <section className="about-banner">
           <div className="container">				
             <div className="row d-flex align-items-center justify-content-center">

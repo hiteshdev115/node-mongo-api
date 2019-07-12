@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import parse from 'html-react-parser';
 import dateFormat from 'dateformat';
+import MetaTags from 'react-meta-tags';
 
 class Servicedetails extends Component {
   
@@ -17,6 +18,11 @@ class Servicedetails extends Component {
         serviceimage: '',
         authorName:'',
         created_at:'',
+        pageTitle:'',
+        metaTitle:'',
+        metaDescription:'',
+        follow:'',
+        index:'',
         error: null,
         isLoading: true
     }
@@ -27,6 +33,7 @@ class Servicedetails extends Component {
     const { match: {params} } = this.props;
     const url = 'http://localhost:3001/api/getSingleServiceByName/';
     axios.get(url+`${params.servicesname}`)
+    
         .then(response => {
             this.setState({ 
                 isLoading: false,
@@ -36,7 +43,13 @@ class Servicedetails extends Component {
                 description: response.data.description,
                 serviceimage:response.data.serviceimage,
                 created_at:response.data.created_at,
-                authorName:response.data.author[0].name });
+                authorName:response.data.author[0].name,
+                pageTitle:response.data.pageTitle,
+                metaTitle:response.data.metaTitle,
+                metaDescription:response.data.metaDescription,
+                follow:response.data.follow,
+                index:response.data.index
+             });
         })
         .catch(error => this.setState({ error, isLoading: false }));
   }
@@ -50,16 +63,26 @@ class Servicedetails extends Component {
                   isLoading: false,
                   services: response.data
                 })
-                console.log(this.state.services);
+                //console.log(this.state.services);
         })
         .catch(error => this.setState({ error, isLoading: false }));  
   }
   
   render() {
-    const { isLoading, services, error, title, description, serviceimage, authorName, created_at } = this.state;
+    const { isLoading, services, error, title, description, serviceimage, created_at, authorName, pageTitle, metaTitle, metaDescription, follow, index } = this.state;
    
     return (
       <div>
+        <MetaTags>
+            <title>{pageTitle}</title>
+            <meta property="og:type" content="website" />
+            <meta property="og:site_name" content="cleversamurai" />
+            <meta name="description"  content={metaDescription}/>
+            <meta property="og:title" content={metaTitle} />
+            <meta property="og:image" content={"/images/"+serviceimage} />
+            <meta property="og:url" content={window.location.href} />
+            <meta name="ROBOTS" content={index+', '+follow} />
+        </MetaTags>
         <section className="relative about-banner">	
             <div className="overlay overlay-bg"><img src={"/images/"+serviceimage} alt={title}></img></div>
             <div className="container">				
@@ -99,7 +122,7 @@ class Servicedetails extends Component {
                                 </div>
                             </div>
                             <div className="col-lg-9 col-md-9">
-                                <h3 class="mt-20 mb-20"></h3>
+                                <h3 className="mt-20 mb-20"></h3>
                                 {parse(description)}
                             </div>
                         </div>

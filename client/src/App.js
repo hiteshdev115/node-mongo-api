@@ -34,14 +34,19 @@ import AdminSeoListComponent from "./page/adminpages/Seolist";
 import AdminAddNewSeoComponent from "./page/adminpages/Addnewseo";
 import AdminEditSeoComponent from "./page/adminpages/Editseo";
 
+import AdminProjectListComponent from "./page/adminpages/projectlist";
+import AdminAddNewProjectComponent from "./page/adminpages/Addnewproject";
+import AdminEditProjectComponent from "./page/adminpages/Editproject";
+
 import AdminDatatableComponent from "./page/adminpages/DatatablePage";
+
+import AdminPortfolioComponent from "./page/Portfolio";
 
 import DashboardComponent from "./page/dashboard";
 
 //import registerServiceWorker from './registerServiceWorkers';
 import Login from './page/Login';
 import Register from './page/Register';
-
 
 
 class App extends Component {
@@ -80,6 +85,12 @@ class App extends Component {
             <Route exact path='/admin/seo-manage/' component={AdminSeoListComponent}></Route>
             <Route exact path='/admin/addnewseo/' component={AdminAddNewSeoComponent}></Route>
             <Route exact path='/admin/editseo/:seoid' component={AdminEditSeoComponent}></Route>
+            <Route exact path='/admin/project-manage/' component={AdminProjectListComponent}></Route>
+            <Route exact path='/admin/addnewproject/' component={AdminAddNewProjectComponent}></Route>     
+            <Route exact path='/admin/project/edit/:projectid' component={AdminEditProjectComponent}></Route> 
+            <Route exact path='/portfolio' component={AdminPortfolioComponent}></Route>          
+     
+            
             
             
           </Switch>

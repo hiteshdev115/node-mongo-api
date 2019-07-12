@@ -16,15 +16,28 @@ class Addnewservice extends Component {
           isActive: true,
           message: '',
           file: '',
+          pageTitle: '',
+          metaTitle: '',
+          metaDescription: '',
+          follow: 'follow',
+          index:'Yes',
           adminLoginUser: JSON.parse(localStorage.getItem('admin-userdetails'))
         }; 
-        this.onEditorChange = this.onEditorChange.bind( this );       
+        this.onEditorChange = this.onEditorChange.bind( this ); 
+        this.radioChange = this.radioChange.bind(this);            
     }  
     toggleChange = () => {
         this.setState({
             isActive: !this.state.isActive,
         });
     }
+
+    radioChange(e) {
+        this.setState({
+            index: e.currentTarget.value
+        });
+    }
+
     onChange = (e) => {
         const state = this.state
         state[e.target.name] = e.target.value;
@@ -50,29 +63,34 @@ class Addnewservice extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData();
+        var loginuserid = this.state.adminLoginUser._id;
+        var url = '';
+        
         if(!this.state.file){
             formData.append('serviceimage','');
+            url = 'http://localhost:3001/api/'+loginuserid+'/addservicewithoutimage';
         } else {
             formData.append('serviceimage',this.state.file); 
+            url = 'http://localhost:3001/api/'+loginuserid+'/addservice';
         }
         formData.append('servicesname',this.state.servicesname);
         formData.append('title',this.state.title);
         formData.append('description',this.state.description);
         formData.append('isActive',this.state.isActive);
+        formData.append('pageTitle',this.state.pageTitle);
+        formData.append('metaTitle',this.state.metaTitle);
+        formData.append('metaDescription',this.state.metaDescription);
+        formData.append('index',this.state.index);
+        formData.append('follow',this.state.follow);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         };
-        console.log(this.state.file);
-        var loginuserid = this.state.adminLoginUser._id;
-        var url = 'http://localhost:3001/api/'+loginuserid+'/addservice';
         
         axios.post(url, formData, config)
-          .then((result) => {
-                //console.log(result);
-                this.setState({ message: '' });
-                //var resultObject = JSON.parse(result.data.userData);
+          .then((result) => {                
+                this.setState({ message: '' });               
                 this.props.history.push('../admin/service-manage');
             })
           .catch((error) => {
@@ -84,7 +102,7 @@ class Addnewservice extends Component {
       }
  
     render() {
-        const { title, servicesname, description, isActive, message} = this.state;
+        const { title, servicesname, description, isActive, message, pageTitle, metaTitle, metaDescription, follow, index} = this.state;
         return (
         <section className="post-content-area section-gap">
             <div className="container">
@@ -116,7 +134,42 @@ class Addnewservice extends Component {
                 </div>
                 <br/>
                 <input type="file" name="file" onChange={this.onChangeHandler}/>
-                <br/><br/>
+                <br/>
+                <div className="comments-area remove-padding">
+                    <h3><strong>Seo Management</strong></h3>
+                    <div className="row">
+                        <div className="col-sm-6">
+                            <label htmlFor="inputEmail">Page Title</label>
+                            <input type="text" className="common-input mb-20 form-control" placeholder="Page title here..." name="pageTitle" value={pageTitle} onChange={this.onChange} required />
+                            
+                            <label htmlFor="inputEmail">Meta Title</label>
+                            <input type="text" className="common-input mb-20 form-control" placeholder="Meta title here..." name="metaTitle" value={metaTitle} onChange={this.onChange} required/>
+                            
+                            <label htmlFor="inputEmail">Meta Description</label>
+                            <textarea className="common-input mb-20 form-control" placeholder="Meta description here..." name="metaDescription" rows="5" value={metaDescription} onChange={this.onChange} required />
+                        </div>
+                        <div className="col-sm-6">
+                            <label>Allow search engines to show this Page in search results?</label>
+                            <div className="radio" >
+                                <input type="radio" className="seo-radio" value="Yes" checked={index === "Yes"}  onChange={this.radioChange} />Yes
+                                <input type="radio" className="seo-radio" value="No" checked={index === "No"} onChange={this.radioChange}/>No
+                            </div>
+                            
+                            <br/>
+                            <label>Should search engines follow links on this Page?</label>
+                            <div className="primary-switch">
+                            <select name="follow" value={follow.toLowerCase()} className="nice-select"  onChange={this.onChange}>
+                                <option value="follow">Yes</option>
+                                <option value="nofollow">No</option>
+                            </select>
+                            
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <br/>
                 <button className="btn btn-lg btn-primary btn-block" type="submit">Save</button>
                 <br/>
                 <a href="./service-manage" className="btn btn-lg btn-primary btn-block">Back To List</a>

@@ -103,7 +103,7 @@ class Servicelist extends Component {
                   columns={columns}
                   initialData={dataTableValue}
                   initialPageLength={5}
-                  initialSortBy={{ prop: 'title', order: 'descending' }}
+                  initialSortBy={{ prop: 'created_at', order: 'descending' }}
                   pageLengthOptions={[ 5, 10, 20, 40, 60, 80, 100 ]}
                 />
                 <div className="progress-table-wrap">

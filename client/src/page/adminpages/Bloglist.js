@@ -69,14 +69,14 @@ class Bloglist extends Component {
  
   
   render() {
-
+    
     var columns = [
-      { title: 'Title', prop: 'title', sortable: true, width:300  },
-      { title: 'Blog Image', prop: 'blogimage' },
-      { title: 'Status', prop: 'status', sortable: true, }, 
-      { title: 'Created At', prop: 'created_at', sortable: true, }, 
-      { title: 'Updated At', prop: 'updated_at', sortable: true, },
-      { title: 'Action', prop:'action'}
+      { title: 'Title', keys:'title', prop: 'title', sortable: true, width:300  },
+      { title: 'Blog Image', keys:'image', prop: 'blogimage' },
+      { title: 'Status', keys:'status', prop: 'status', sortable: true, }, 
+      { title: 'Created At', keys:'createDate', prop: 'created_at', sortable: true, }, 
+      { title: 'Updated At', keys:'updateDate', prop: 'updated_at', sortable: true, },
+      { title: 'Action', keys:'action', prop:'action'}
     ];
 
     const { blogs, isLoading } = this.state;
@@ -106,11 +106,11 @@ class Bloglist extends Component {
                 <h3 className="mb-30">Blog Management</h3>
                 <DataTable
                   className="pagination"
-                  keys="hp123"
+                  keys="123456"
                   columns={columns}
                   initialData={dataTableValue}
                   initialPageLength={5}
-                  initialSortBy={{ prop: 'title', order: 'descending' }}
+                  initialSortBy={{ prop: 'created_at', order: 'descending' }}
                   pageLengthOptions={[ 5, 10, 20, 40, 60, 80, 100 ]}
                 />
                 <div className="progress-table-wrap">

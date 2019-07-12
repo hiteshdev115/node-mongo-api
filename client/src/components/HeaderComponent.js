@@ -60,7 +60,7 @@ class Header extends Component {
                     <ul>
                       <li><Link to="/admin/blog-manage"> Blog Management </Link></li>
                       <li><Link to="/admin/service-manage"> Services Management </Link></li>
-                      <li><Link to="/admin/user-manage"> User Management </Link></li>
+                      <li><Link to="/admin/project-manage"> Project Management </Link></li>
                       <li><Link to="/admin/seo-manage"> SEO Management </Link></li>
                     </ul>
                   </li>
@@ -113,12 +113,8 @@ class Header extends Component {
                   <ul className="nav-menu">
                     <li><Link to="/"> Home </Link></li>
                     <li><Link to="/blog"> Blog </Link></li>
-                    <li><Link to="/services"> Services </Link>
-                      <ul>
-                        <li>Service 1</li>
-                        <li>Service 2</li>
-                      </ul>
-                    </li>
+                    <li><Link to="/services"> Services </Link></li>
+                    <li><Link to="/portfolio"> Portfolio </Link></li>
                     <li><Link to="/contactus"> Contact us </Link></li>
                     {loginUserData}
                   </ul>
@@ -148,7 +144,7 @@ class Header extends Component {
                       <ul>
                         <li><Link to="/admin/blog-manage"> Blog Management </Link></li>
                         <li><Link to="/admin/service-manage"> Services Management </Link></li>
-                        <li><Link to="/admin/user-manage"> User Management </Link></li>
+                        <li><Link to="/admin/project-manage"> Project Management </Link></li>
                         <li><Link to="/admin/seo-manage"> SEO Management </Link></li>
                       </ul>
                     </li>
@@ -180,12 +176,8 @@ class Header extends Component {
                   <ul className="nav-menu">
                     <li><Link to="/"> Home </Link></li>
                     <li><Link to="/blog"> Blog </Link></li>
-                    <li><Link to="/services"> Services </Link>
-                      <ul>
-                        <li>Service 1</li>
-                        <li>Service 2</li>
-                      </ul>
-                    </li>
+                    <li><Link to="/services"> Services </Link></li>
+                    <li><Link to="/portfolio"> Portfolio </Link></li>
                     <li><Link to="/contactus"> Contact us </Link></li>
                     {username ? <li className="loginuser">Hello..{username}
                           <ul className="loginuser-submenu">
@@ -214,12 +206,8 @@ class Header extends Component {
               <ul className="nav-menu">
                 <li><Link to="/"> Home </Link></li>
                 <li><Link to="/blog"> Blog </Link></li>
-                <li><Link to="/services"> Services </Link>
-                  <ul>
-                    <li>Service 1</li>
-                    <li>Service 2</li>
-                  </ul>
-                </li>
+                <li><Link to="/services"> Services </Link></li>
+                <li><Link to="/portfolio"> Portfolio </Link></li>
                 <li><Link to="/contactus"> Contact us </Link></li>
                 {username ? <li className="loginuser">Hello..{username}
                       <ul className="loginuser-submenu">

@@ -9,7 +9,8 @@ exports.getallservices = async function(req, res)
 {
     console.log('all service action');
     try {
-        var result = await serviceModel.find().exec();
+        var sortDesc = { created_at: -1 };
+        var result = await serviceModel.find().sort(sortDesc).exec();
         //console.log(result);
         if(result == '')
         {
@@ -113,8 +114,7 @@ exports.insertservice = async function(req, res)
     console.log("insert service action");
     const userId  = req.params.id;
     req.body.author = userId;
-    //console.log(req);
-    //console.log(req.file);
+    
     if(req.body.serviceimage !== '')
     {
         req.body.serviceimage = req.file.filename;
@@ -125,6 +125,19 @@ exports.insertservice = async function(req, res)
         
         if(userId)
         {
+            if(req.body.index == 'Yes' )
+            {
+                req.body.index = 'INDEX';
+            } else {
+                req.body.index = 'NOINDEX';
+            }
+
+            if(req.body.follow == 'follow' )
+            {
+                req.body.follow = 'FOLLOW';
+            } else {
+                req.body.follow = 'NOFOLLOW';
+            }  
             var user = await userModel.findById(userId);
             var service = new serviceModel(req.body);
             var result = await service.save();
@@ -149,11 +162,22 @@ exports.updateservice = async function(req, res)
     console.log("update service action....");
     
     try {
-        //console.log("update user Id ==>"+req.params.id);
         if(req.file !== undefined){
             req.body.serviceimage = '';
-            //console.log("update user Id ==>"+req.body.serviceimage);
             req.body.serviceimage = req.file.filename;
+        }
+        if(req.body.index == 'Yes' )
+        {
+            req.body.index = 'INDEX';
+        } else {
+            req.body.index = 'NOINDEX';
+        }
+
+        if(req.body.follow == 'follow' )
+        {
+            req.body.follow = 'FOLLOW';
+        } else {
+            req.body.follow = 'NOFOLLOW';
         }
         const userId  = req.params.id;
         req.body.author = userId;
@@ -174,15 +198,16 @@ exports.updateservice = async function(req, res)
 
 exports.deleteservice = async function(req, res)
 {
+    console.log('Delete Services Action');
     try {
         var service = await serviceModel.findById(req.params.id).exec();
         //console.log(service);
         if(service.serviceimage){
             var ImgParts = service.serviceimage.split('.');
             if(ImgParts){
-                var resized_big = ImgParts[0]+'_resized-big.'+ImgParts[1];
-                var resized_small = ImgParts[0]+'_resized-small.'+ImgParts[1];
-                var thumbnail = ImgParts[0]+'_thumbnail.'+ImgParts[1];
+                var resized_big = ImgParts[0]+'_resized-big.png';
+                var resized_small = ImgParts[0]+'_resized-small.png';
+                var thumbnail = ImgParts[0]+'_thumbnail.png';
 
                 fs.unlinkSync(appRoot.path + "/client/public/images/"+resized_big);
                 fs.unlinkSync(appRoot.path + "/client/public/images/"+resized_small);
@@ -206,6 +231,7 @@ exports.deleteservice = async function(req, res)
         
         res.status(200).send({ message: 'You are deleted successfully' });
     } catch (error) {
+        console.log(error);
         res.status(500).send({ message: 'Something went wrong!!' });
     }
 };

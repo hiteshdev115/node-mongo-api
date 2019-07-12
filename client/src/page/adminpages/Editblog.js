@@ -8,11 +8,6 @@ class Editblog extends Component {
     constructor(props) {
         super(props);
         
-        this.onChangeTitle = this.onChangeTitle.bind(this);
-        this.onChangeBlogname = this.onChangeBlogname.bind(this);
-        this.onChangeSubtitle = this.onChangeSubtitle.bind(this);
-        this.onEditorChange = this.onEditorChange.bind( this );    
-        
         this.state = {
             id:'',
             title: '',
@@ -23,63 +18,38 @@ class Editblog extends Component {
             message: '',
             file: null,
             blogimage:'',
+            pageTitle: '',
+            metaTitle: '',
+            metaDescription: '',
+            follow: 'follow',
+            index:'Yes',
             adminLoginUser: JSON.parse(localStorage.getItem('admin-userdetails'))
         };   
+        this.onChangeTitle = this.onChangeTitle.bind(this);
+        this.onChangeBlogname = this.onChangeBlogname.bind(this);
+        this.onChangeSubtitle = this.onChangeSubtitle.bind(this);
+        this.onEditorChange = this.onEditorChange.bind( this );
         
-        
+        this.onChangePageTitle = this.onChangePageTitle.bind( this );
+        this.onChangeMetaTitle = this.onChangeMetaTitle.bind( this );
+        this.onChangeMetaDescription = this.onChangeMetaDescription.bind( this );
+        this.handleChange = this.handleChange.bind( this );
+        //this.onChangeIndex = this.onChangeIndex.bind( this );
+        this.radioChange = this.radioChange.bind(this);
     }
 
-    componentDidMount(){
-        const { match: {params} } = this.props;
-        //console.log(this.props);
-        //console.log(`${params.blogid}`);
-        var active = '';
-        var url = 'http://localhost:3001/api/getSingleblog/';
-        axios.get(url+`${params.blogid}`)
-        .then(response => {
-            if(response.data.isActive === true){
-                active = 'checked';
-            }
-            this.setState({ 
-                id:response.data._id,
-                title: response.data.title,
-                blogname: response.data.blogname,
-                subtitle: response.data.subtitle,
-                description: response.data.description,
-                blogimage:response.data.blogimage,
-                isActive:active
-                //file:response.data.blogimage
-             });
-        })
-        .catch(error => this.setState({ error, isLoading: false }));
-    }
-
-    unlinkThumb = () => {
-        console.log('===Remove Thumb Action==>'+this.state.id);
-        var active = '';
-        var url = 'http://localhost:3001/api/removethumb/';
-        axios.post(url, {id:this.state.id})
-        .then(response => {
-            if(response.data.isActive === true){
-                active = 'checked';
-            }
-            this.setState({ 
-                id:response.data._id,
-                title: response.data.title,
-                blogname: response.data.blogname,
-                subtitle: response.data.subtitle,
-                description: response.data.description,
-                blogimage:'',
-                isActive:active});
-        })
-        .catch(error => this.setState({ error }));
-    }
-    
-    toggleChange = () => {
+    toggleChange = () => {        
         this.setState({
-            isActive: !this.state.isActive,
+            isActive: this.state.isActive,
         });
     }
+
+    radioChange(e) {
+        this.setState({
+            index: e.currentTarget.value
+        });
+    }
+    
     
     onChangeTitle(e) {
         this.setState({
@@ -108,11 +78,106 @@ class Editblog extends Component {
         });
     }
     
-     onChangeHandler=event=>{
+    onChangeHandler=event=>{
         this.setState({
             file: event.target.files[0]
         })
+    }
+
+    onChangePageTitle(e) {
+        this.setState({
+            pageTitle: e.target.value
+        });
+    }
+
+    onChangeMetaTitle(e) {
+        this.setState({
+            metaTitle: e.target.value
+        });
+    }
+
+    onChangeMetaDescription(e) {
+        this.setState({
+            metaDescription: e.target.value
+        });
+    }
+
+    handleChange(e) {
+        this.setState({
+          follow: e.target.value
+        });
       }
+
+    componentDidMount(){
+        const { match: {params} } = this.props;
+        //console.log(this.props);
+        //console.log(`${params.blogid}`);
+        var active = '';
+        var indexVal = 'No';
+        var url = 'http://localhost:3001/api/getSingleblog/';
+        axios.get(url+`${params.blogid}`)
+        .then(response => {
+            //console.log(response.data);
+            if(response.data.isActive === true){
+                active = true;
+            }
+            if(response.data.index === 'INDEX')
+            {
+              indexVal = 'Yes';
+            }
+            console.log('---From did mount-->'+indexVal);
+            this.setState({ 
+                id:response.data._id,
+                title: response.data.title,
+                blogname: response.data.blogname,
+                subtitle: response.data.subtitle,
+                description: response.data.description,
+                blogimage:response.data.blogimage,
+                isActive:active,
+                pageTitle: response.data.pageTitle,
+                metaTitle: response.data.metaTitle,
+                metaDescription: response.data.metaDescription,
+                follow:response.data.follow,
+                index:indexVal
+                //file:response.data.blogimage
+             });
+        })
+        .catch(error => this.setState({ error, isLoading: false }));
+    }
+
+    unlinkThumb = () => {
+        console.log('===Remove Thumb Action==>'+this.state.id);
+        var active = '';
+        var indexVal = 'No';
+        var url = 'http://localhost:3001/api/removethumb/';
+        axios.post(url, {id:this.state.id})
+        .then(response => {
+            if(response.data.isActive === true){
+                active = true;
+            }
+            if(response.data.index === 'INDEX')
+            {
+              indexVal = 'Yes';
+            }
+            this.setState({ 
+                id:response.data._id,
+                title: response.data.title,
+                blogname: response.data.blogname,
+                subtitle: response.data.subtitle,
+                description: response.data.description,
+                blogimage:'',
+                pageTitle: response.data.pageTitle,
+                metaTitle: response.data.metaTitle,
+                metaDescription: response.data.metaDescription,
+                follow:response.data.follow,
+                index:indexVal,
+                isActive:active});
+        })
+        .catch(error => this.setState({ error }));
+    }
+    
+    
+
 
     onSubmit = (e) => {
         const { match: {params} } = this.props;
@@ -132,13 +197,18 @@ class Editblog extends Component {
             formData.append('blogimage',this.state.file);
             url = 'http://localhost:3001/api/'+loginuseid+'/updateblog/';
         } 
-        console.log(this.state.file);
-        console.log('===='+this.state.blogimage);       
+          
         formData.append('blogname',this.state.blogname);
         formData.append('title',this.state.title);
         formData.append('subtitle',this.state.subtitle);
         formData.append('description',this.state.description);
         formData.append('isActive',this.state.isActive);
+        formData.append('pageTitle',this.state.pageTitle);
+        formData.append('metaTitle',this.state.metaTitle);
+        formData.append('metaDescription',this.state.metaDescription);
+        formData.append('follow',this.state.follow);
+        formData.append('index',this.state.index);
+
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -162,6 +232,8 @@ class Editblog extends Component {
  
     render() {
         const { blogimage, isActive, message} = this.state;
+        //console.log('---Index----'+index);
+        //console.log('---Follow----'+this.state.follow);
         
         let imageDisp = [];
         if(blogimage === ''){
@@ -171,10 +243,10 @@ class Editblog extends Component {
         } else {
             imageDisp.push(
                 <div key="imagecontain">
-                    <img src={"/images/"+blogimage} width="200" alt={blogimage} title={blogimage}></img>
+                    <img src={"/images/"+blogimage} width="230" alt={blogimage} title={blogimage}></img>
                     <input type="hidden" name="file" value={blogimage} />
                     <br/>
-                    <a className="genric-btn default-border circle" onClick={this.unlinkThumb}>Remove Blog Featured Image</a>
+                    <a className="genric-btn default-border circle btn-color" onClick={this.unlinkThumb}>Remove Blog Featured Image</a>
                 </div>
             )
         }
@@ -212,7 +284,43 @@ class Editblog extends Component {
                 </div>
                 <br/>
                 {imageDisp}
+               
+                <div className="comments-area remove-padding">
+                    <h3><strong>Seo Management</strong></h3>
+                    <div className="row">
+                        <div className="col-sm-6">
+                            <label htmlFor="inputEmail">Page Title</label>
+                            <input type="text" className="common-input mb-20 form-control" placeholder="Page title here..." name="pageTitle" value={this.state.pageTitle} onChange={this.onChangePageTitle} required />
+                            
+                            <label htmlFor="inputEmail">Meta Title</label>
+                            <input type="text" className="common-input mb-20 form-control" placeholder="Meta title here..." name="MetaTitle" value={this.state.metaTitle} onChange={this.onChangeMetaTitle} required/>
+                            
+                            <label htmlFor="inputEmail">Meta Description</label>
+                            <textarea className="common-input mb-20 form-control" placeholder="Meta description here..." name="metsDescription" rows="5" value={this.state.metaDescription} onChange={this.onChangeMetaDescription} required />
+                        </div>
+                        <div className="col-sm-6">
+                            <label>Allow search engines to show this Page in search results?</label>
+                            <div className="radio" >
+                                <input type="radio" className="seo-radio" value="Yes" checked={this.state.index === "Yes"}  onChange={this.radioChange} />Yes
+                                <input type="radio" className="seo-radio" value="No" checked={this.state.index === "No"} onChange={this.radioChange}/>No
+                            </div>
+                            
+                            <br/>
+                            <label>Should search engines follow links on this Page?</label>
+                            <div className="primary-switch">
+                            <select name="follow" value={this.state.follow.toLowerCase()} className="nice-select"  onChange={this.handleChange}>
+                                <option value="follow">Yes</option>
+                                <option value="nofollow">No</option>
+                            </select>
+                            
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
                 <br/> <br/>
+
                 <button className="btn btn-lg btn-primary btn-block" type="submit">Save</button>
                 <br/>
                 <a href="../blog-manage" className="btn btn-lg btn-primary btn-block">Back To List</a>

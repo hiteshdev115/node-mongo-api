@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import ShowMoreText from 'react-show-more-text'; 
 import parse from 'html-react-parser';
 
-import MetaTags from 'react-meta-tags';
+
 //import config from 'react-global-configuration';
-import axios from 'axios';
+//import axios from 'axios';
+import LazyLoad from 'react-lazyload';
+
+import Seo from '../page/SeoMeatData';
 
 class Blog extends Component {
   
@@ -14,21 +17,11 @@ class Blog extends Component {
       blogs: [],
       error:null,
       isLoading: true,
-      
-      pageTitle:'',
-      pageUrl:'',
-      metaTitle:'',
-      metaDescription:'',
-      metaImageUrl:'',
-      index:'',
-      follow:'',
     }
   }
-
   
   componentDidMount() {
     this.fetchAllBlog(); 
-    this.getSeoMetaData();
   }
 
   fetchAllBlog() {
@@ -43,47 +36,17 @@ class Blog extends Component {
       .catch(error => this.setState({ error, isLoading: false }));
   }
 
-  getSeoMetaData = () => {
-    var cUrl = window.location.href;
-    console.log(cUrl);
-    const url = 'http://localhost:3001/api/getSingleSeoByName/';
-    axios.get(url+encodeURIComponent(cUrl))
-    .then(response => { 
-        console.log(response.data);
-        if(response.data){
-          this.setState({
-            pageTitle:response.data.pageTitle,
-            pageUrl:response.data.pageUrl,
-            metaTitle:response.data.metaTitle,
-            metaDescription:response.data.metaDescription,
-            metaImageUrl:response.data.metaImageUrl,
-            index:response.data.index,
-            follow:response.data.follow
-          })         
-        }        
-    });
-    }
   
   
+    
   
   render() {    
     
-    const { blogs, error, isLoading, pageTitle, pageUrl, metaTitle, metaDescription, metaImageUrl, index, follow } = this.state;
-    //console.log(config.get('baseUrl'));
-    //console.log(this.props);
+    const { blogs, error, isLoading } = this.state;   
+    
     return (
-      <div>
-        
-          <MetaTags>
-                <title>{pageTitle}</title>
-                <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="cleversamurai" />
-                <meta name="description"  content={metaDescription}/>
-                <meta property="og:title" content={metaTitle} />
-                <meta property="og:image" content={metaImageUrl} />
-                <meta property="og:url" content={pageUrl} />
-                <meta name="ROBOTS" content={index+', '+follow} />
-            </MetaTags>
+      <div>     
+          <Seo/>
           <section className="banner-area relative blog-home-banner" id="home">	
             <div className="overlay overlay-bg"></div>
             <div className="container">				
@@ -164,44 +127,48 @@ class Blog extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-lg-12 posts-list">
+                    
                       {!isLoading ? (
                         blogs.map(blog => {
                           const { _id, title, blogname, description, blogimage } = blog;
                           return (
-                            <div className="single-post row" key={_id}>
-                              <div className="col-lg-3  col-md-3 meta-details">
-                                <div className="user-details row">
-                                  <p className="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span className="lnr lnr-user"></span></p>
-                                  <p className="date col-lg-12 col-md-12 col-6"><a href="#">12 Dec, 2017</a> <span className="lnr lnr-calendar-full"></span></p>
-                                  <p className="view col-lg-12 col-md-12 col-6"><a href="#">1.2M Views</a> <span className="lnr lnr-eye"></span></p>
-                                  <p className="comments col-lg-12 col-md-12 col-6"><a href="#">06 Comments</a> <span className="lnr lnr-bubble"></span></p>						
+                            <LazyLoad key={_id} height={100} offset={[-100, 100]}>
+                              <div className="single-post row" key={_id}>
+                                <div className="col-lg-3  col-md-3 meta-details">
+                                  <div className="user-details row">
+                                    <p className="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span className="lnr lnr-user"></span></p>
+                                    <p className="date col-lg-12 col-md-12 col-6"><a href="#">12 Dec, 2017</a> <span className="lnr lnr-calendar-full"></span></p>
+                                    <p className="view col-lg-12 col-md-12 col-6"><a href="#">1.2M Views</a> <span className="lnr lnr-eye"></span></p>
+                                    <p className="comments col-lg-12 col-md-12 col-6"><a href="#">06 Comments</a> <span className="lnr lnr-bubble"></span></p>						
+                                  </div>
+                                </div>
+                                <div className="col-lg-9 col-md-9 ">
+                                  <div className="feature-img">
+                                  <a href={"/blog/"+blogname}>
+                                    <img className="img-fluid" src={"./images/"+blogimage} alt=""></img>
+                                  </a>
+                                  </div>
+                                  <a className="posts-title" href={"/blog/"+blogname}><h3>{title}</h3></a>
+                                  <div className="excert">
+                                    <ShowMoreText
+                                        lines={3}
+                                        more='Show more'
+                                        less='Show less'
+                                        anchorClass=''>
+                                        {parse(description)}
+                                    </ShowMoreText>
+                                  </div>
+                                  
+                                  {/*<a href="" className="primary-btn">View More</a>*/}
                                 </div>
                               </div>
-                              <div className="col-lg-9 col-md-9 ">
-                                <div className="feature-img">
-                                <a href={"/blog/"+blogname}>
-                                  <img className="img-fluid" src={"./images/"+blogimage} alt=""></img>
-                                </a>
-                                </div>
-                                <a className="posts-title" href={"/blog/"+blogname}><h3>{title}</h3></a>
-                                <div className="excert">
-                                  <ShowMoreText
-                                      lines={3}
-                                      more='Show more'
-                                      less='Show less'
-                                      anchorClass=''>
-                                      {parse(description)}
-                                  </ShowMoreText>
-                                </div>
-                                
-                                {/*<a href="" className="primary-btn">View More</a>*/}
-                              </div>
-                            </div>
+                            </LazyLoad>
                         );
-                      }) 
+                      })                   
                     ) : (
                       <h3>Loading...</h3>
                     )}
+                  
                 </div>
               </div>
             </div>

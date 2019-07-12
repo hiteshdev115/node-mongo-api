@@ -7,10 +7,17 @@ import CKEditor from 'ckeditor4-react';
 class Editservice extends Component {
     constructor(props) {
         super(props);
-        
+
         this.onChangeTitle = this.onChangeTitle.bind(this);
         this.onChangeServicename = this.onChangeServicename.bind(this);
-        this.onEditorChange = this.onEditorChange.bind( this );    
+        this.onEditorChange = this.onEditorChange.bind( this ); 
+        
+        this.onChangePageTitle = this.onChangePageTitle.bind( this );
+        this.onChangeMetaTitle = this.onChangeMetaTitle.bind( this );
+        this.onChangeMetaDescription = this.onChangeMetaDescription.bind( this );
+        this.handleChange = this.handleChange.bind( this );
+        //this.onChangeIndex = this.onChangeIndex.bind( this );
+        this.radioChange = this.radioChange.bind(this);
         
         this.state = {
             id:'',
@@ -21,45 +28,24 @@ class Editservice extends Component {
             message: '',
             file: null,
             serviceimage:'',
+            pageTitle: '',
+            metaTitle: '',
+            metaDescription: '',
+            follow: 'follow',
+            index:'Yes',
             adminLoginUser: JSON.parse(localStorage.getItem('admin-userdetails'))
-        };   
-        
-        
+        };  
     }
 
-    componentDidMount(){
-        const { match: {params} } = this.props;
-        var url = 'http://localhost:3001/api/getSingleService/';
-        axios.get(url+`${params.serviceid}`)
-        .then(response => {
-            this.setState({ 
-                id:response.data._id,
-                title: response.data.title,
-                servicesname: response.data.servicesname,
-                description: response.data.description,
-                serviceimage:response.data.serviceimage });
-        })
-        .catch(error => this.setState({ error, isLoading: false }));
-    }
-
-    unlinkThumb = () => {
-        console.log('===Remove Thumb Action==>'+this.state.id);
-        var url = 'http://localhost:3001/api/service/removethumb/';
-        axios.post(url, {id:this.state.id})
-        .then(response => {
-            this.setState({ 
-                id:response.data._id,
-                title: response.data.title,
-                servicesname: response.data.servicesname,
-                description: response.data.description,
-                serviceimage:'' });
-        })
-        .catch(error => this.setState({ error }));
-    }
-    
     toggleChange = () => {
         this.setState({
             isActive: !this.state.isActive,
+        });
+    }
+
+    radioChange(e) {
+        this.setState({
+            index: e.currentTarget.value
         });
     }
     
@@ -74,23 +60,111 @@ class Editservice extends Component {
             servicesname: modified_slug
           });
     }
+    
     onChangeServicename(e) {
         this.setState({
-          servicesame: e.target.value
+          servicesname: e.target.value
         });
     }
+
     onEditorChange(e) {
         this.setState({
           description: e.editor.getData()
         });
     }
     
-     onChangeHandler=event=>{
+    onChangeHandler=event=>{
         this.setState({
             file: event.target.files[0]
         })
-      }
+    }
 
+    onChangePageTitle(e) {
+        this.setState({
+            pageTitle: e.target.value
+        });
+    }
+
+    onChangeMetaTitle(e) {
+        this.setState({
+            metaTitle: e.target.value
+        });
+    }
+
+    onChangeMetaDescription(e) {
+        this.setState({
+            metaDescription: e.target.value
+        });
+    }
+
+    handleChange(e) {
+        this.setState({
+          follow: e.target.value
+        });
+    }
+
+    componentDidMount(){
+        const { match: {params} } = this.props;
+        var active = '';
+        var indexVal = 'No';
+        var url = 'http://localhost:3001/api/getSingleService/';
+        axios.get(url+`${params.serviceid}`)
+        .then(response => {
+            if(response.data.isActive === true){
+                active = true;
+            }
+            if(response.data.index === 'INDEX')
+            {
+              indexVal = 'Yes';
+            }
+            this.setState({ 
+                id:response.data._id,
+                title: response.data.title,
+                servicesname: response.data.servicesname,
+                description: response.data.description,
+                serviceimage:response.data.serviceimage,
+                isActive:active,
+                pageTitle: response.data.pageTitle,
+                metaTitle: response.data.metaTitle,
+                metaDescription: response.data.metaDescription,
+                follow:response.data.follow,
+                index:indexVal 
+            });
+        })
+        .catch(error => this.setState({ error, isLoading: false }));
+    }
+
+    unlinkThumb = () => {
+        console.log('===Remove Thumb Action==>'+this.state.id);
+        var active = '';
+        var indexVal = 'No';
+        var url = 'http://localhost:3001/api/service/removethumb/';
+        axios.post(url, {id:this.state.id})
+        .then(response => {
+            if(response.data.isActive === true){
+                active = true;
+            }
+            if(response.data.index === 'INDEX')
+            {
+              indexVal = 'Yes';
+            }
+            this.setState({ 
+                id:response.data._id,
+                title: response.data.title,
+                servicesname: response.data.servicesname,
+                description: response.data.description,
+                serviceimage:'',
+                pageTitle: response.data.pageTitle,
+                metaTitle: response.data.metaTitle,
+                metaDescription: response.data.metaDescription,
+                follow:response.data.follow,
+                index:indexVal,
+                isActive:active
+             });
+        })
+        .catch(error => this.setState({ error }));
+    }
+    
     onSubmit = (e) => {
         const { match: {params} } = this.props;
         console.log(`${params.serviceid}`);
@@ -114,6 +188,11 @@ class Editservice extends Component {
         formData.append('title',this.state.title);
         formData.append('description',this.state.description);
         formData.append('isActive',this.state.isActive);
+        formData.append('pageTitle',this.state.pageTitle);
+        formData.append('metaTitle',this.state.metaTitle);
+        formData.append('metaDescription',this.state.metaDescription);
+        formData.append('follow',this.state.follow);
+        formData.append('index',this.state.index);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -182,6 +261,41 @@ class Editservice extends Component {
                 </div>
                 <br/>
                 {imageDisp}
+
+                <div className="comments-area remove-padding">
+                    <h3><strong>Seo Management</strong></h3>
+                    <div className="row">
+                        <div className="col-sm-6">
+                            <label htmlFor="inputEmail">Page Title</label>
+                            <input type="text" className="common-input mb-20 form-control" placeholder="Page title here..." name="pageTitle" value={this.state.pageTitle} onChange={this.onChangePageTitle} required />
+                            
+                            <label htmlFor="inputEmail">Meta Title</label>
+                            <input type="text" className="common-input mb-20 form-control" placeholder="Meta title here..." name="MetaTitle" value={this.state.metaTitle} onChange={this.onChangeMetaTitle} required/>
+                            
+                            <label htmlFor="inputEmail">Meta Description</label>
+                            <textarea className="common-input mb-20 form-control" placeholder="Meta description here..." name="metsDescription" rows="5" value={this.state.metaDescription} onChange={this.onChangeMetaDescription} required />
+                        </div>
+                        <div className="col-sm-6">
+                            <label>Allow search engines to show this Page in search results?</label>
+                            <div className="radio" >
+                                <input type="radio" className="seo-radio" value="Yes" checked={this.state.index === "Yes"}  onChange={this.radioChange} />Yes
+                                <input type="radio" className="seo-radio" value="No" checked={this.state.index === "No"} onChange={this.radioChange}/>No
+                            </div>
+                            
+                            <br/>
+                            <label>Should search engines follow links on this Page?</label>
+                            <div className="primary-switch">
+                            <select name="follow" value={this.state.follow.toLowerCase()} className="nice-select"  onChange={this.handleChange}>
+                                <option value="follow">Yes</option>
+                                <option value="nofollow">No</option>
+                            </select>
+                            
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
                 <br/> <br/>
                 <button className="btn btn-lg btn-primary btn-block" type="submit">Save</button>
                 <br/>

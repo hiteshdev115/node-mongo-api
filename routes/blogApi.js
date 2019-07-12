@@ -9,7 +9,9 @@ exports.getallblog = async function(req, res)
 {
     console.log('all seo action');
     try {
-        var result = await blogModel.find().exec();
+        var sortDesc = { created_at: -1 };
+        var result = await blogModel.find().sort(sortDesc).exec();
+        //console.log(result);
         res.send(result);
     } catch (error) {
         res.status(500).send({ message: 'No data found!' });
@@ -117,7 +119,7 @@ exports.insertblog = async function(req, res)
     req.body.author = userId;
     //console.log(userId);
     
-    //console.log(req.body);
+    console.log(req.body);
     if(req.body.blogimage !== '')
     {
         req.body.blogimage = req.file.filename;
@@ -127,6 +129,20 @@ exports.insertblog = async function(req, res)
         
         if(userId)
         { 
+            if(req.body.index == 'Yes' )
+            {
+                req.body.index = 'INDEX';
+            } else {
+                req.body.index = 'NOINDEX';
+            }
+
+            if(req.body.follow == 'follow' )
+            {
+                req.body.follow = 'FOLLOW';
+            } else {
+                req.body.follow = 'NOFOLLOW';
+            }  
+
             var user = await userModel.findById(userId);
             var blog = new blogModel(req.body);
             //console.log(blog);
@@ -150,16 +166,30 @@ exports.updateblog = async function(req, res)
 {
     console.log("update page action....");
     //console.log(req.body);
-    console.log(req.file);
+    //console.log(req.file);
     //console.log(req);
     try {
         //console.log("update user Id ==>"+req.params.id);
         
         if(req.file !== undefined){
             req.body.blogimage = '';
-            console.log("update user Id ==>"+req.body.blogimage);
+            //console.log("update user Id ==>"+req.body.blogimage);
             req.body.blogimage = req.file.filename;
         }
+        
+        if(req.body.index == 'Yes' )
+        {
+            req.body.index = 'INDEX';
+        } else {
+            req.body.index = 'NOINDEX';
+        }
+
+        if(req.body.follow == 'follow' )
+        {
+            req.body.follow = 'FOLLOW';
+        } else {
+            req.body.follow = 'NOFOLLOW';
+        }   
         const userId  = req.params.id;
         req.body.author = userId;
                 
@@ -187,9 +217,9 @@ exports.deleteblog = async function(req, res)
         if(blog.blogimage){
             var ImgParts = blog.blogimage.split('.');
             if(ImgParts){
-                var resized_big = ImgParts[0]+'_resized-big.'+ImgParts[1];
-                var resized_small = ImgParts[0]+'_resized-small.'+ImgParts[1];
-                var thumbnail = ImgParts[0]+'_thumbnail.'+ImgParts[1];
+                var resized_big = ImgParts[0]+'_resized-big.png';
+                var resized_small = ImgParts[0]+'_resized-small.png';
+                var thumbnail = ImgParts[0]+'_thumbnail.png';
 
                 fs.unlinkSync(appRoot.path + "/client/public/images/"+resized_big);
                 fs.unlinkSync(appRoot.path + "/client/public/images/"+resized_small);

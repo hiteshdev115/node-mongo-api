@@ -22,6 +22,11 @@ class Blogdetails extends Component {
         blogimage: '',
         authorName:'',
         created_at:'',
+        pageTitle:'',
+        metaTitle:'',
+        metaDescription:'',
+        follow:'',
+        index:'',
         error: null,
         isLoading: true
     }
@@ -42,7 +47,13 @@ class Blogdetails extends Component {
                 description: response.data.description,
                 created_at: response.data.created_at,
                 blogimage:response.data.blogimage,
-                authorName:response.data.author[0].name });
+                authorName:response.data.author[0].name,
+                pageTitle:response.data.pageTitle,
+                metaTitle:response.data.metaTitle,
+                metaDescription:response.data.metaDescription,
+                follow:response.data.follow,
+                index:response.data.index
+            });
         })
         .catch(error => this.setState({ error, isLoading: false }));
        
@@ -63,7 +74,7 @@ class Blogdetails extends Component {
   }
   
   render() {
-    const url = '';//config.get('hkp');
+    const url = window.location.href;
     const shareText = 'Lightweight social sharing buttons for React. No tracking. Just fun.';
     /*const tumblr = {
       title: 'React Sharingbuttons',
@@ -76,24 +87,25 @@ class Blogdetails extends Component {
       marginTop: 75,
       marginBottom: 100,
     };
-    const { isLoading, blogs, error, title, subtitle, created_at, description, blogimage, authorName } = this.state;
+    const { isLoading, blogs, error, title, subtitle, created_at, description, blogimage, authorName, pageTitle, metaTitle, metaDescription, follow, index } = this.state;
     //console.log(error);
     return (
       <div>
+        <MetaTags>
+            <title>{pageTitle}</title>
+            <meta property="og:type" content="website" />
+            <meta property="og:site_name" content="cleversamurai" />
+            <meta name="description"  content={metaDescription}/>
+            <meta property="og:title" content={metaTitle} />
+            <meta property="og:image" content={"/images/"+blogimage} />
+            <meta property="og:url" content={window.location.href} />
+            <meta name="ROBOTS" content={index+', '+follow} />
+        </MetaTags>
         <section className="relative about-banner"> 
             &bnsp;
         </section>
         {error ? <p>{error.message}</p> : null}
         <section className="post-content-area single-post-area">
-            <MetaTags>
-                <title>Cleversmaurai</title>
-                <meta property="og:type" content="website" />
-                <meta name="description" content="Some description." />
-                <meta property="og:title" content="MyApp" />
-                <meta property="og:image" content={"/images/"+blogimage} />
-                <meta property="og:url" content={url} />
-                <meta property="og:site_name" content="Cleversamurai" />
-            </MetaTags>
             <div className="container">
                 <div className="row">
                     <div className="col-lg-8 posts-list">

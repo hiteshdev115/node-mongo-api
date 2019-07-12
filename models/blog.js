@@ -14,6 +14,11 @@ var blogSchema = new Schema({
   }],
   blogimage: String,
   isActive: Boolean,
+  pageTitle: { type: String },
+  metaTitle: String,
+  metaDescription: String,
+  follow:{ type: String, default: 'follow' },
+  index:{ type: String, default: 'index' },
   created_at: Date,
   updated_at: Date
 });
