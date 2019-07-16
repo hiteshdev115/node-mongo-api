@@ -37,6 +37,7 @@ import AdminEditSeoComponent from "./page/adminpages/Editseo";
 import AdminProjectListComponent from "./page/adminpages/projectlist";
 import AdminAddNewProjectComponent from "./page/adminpages/Addnewproject";
 import AdminEditProjectComponent from "./page/adminpages/Editproject";
+import AdminProjectDetailsComponent from "./page/ProjectDetails";
 
 import AdminDatatableComponent from "./page/adminpages/DatatablePage";
 
@@ -88,11 +89,9 @@ class App extends Component {
             <Route exact path='/admin/project-manage/' component={AdminProjectListComponent}></Route>
             <Route exact path='/admin/addnewproject/' component={AdminAddNewProjectComponent}></Route>     
             <Route exact path='/admin/project/edit/:projectid' component={AdminEditProjectComponent}></Route> 
-            <Route exact path='/portfolio' component={AdminPortfolioComponent}></Route>          
+            <Route exact path='/portfolio' component={AdminPortfolioComponent}></Route>    
+            <Route exact path='/portfolio/:slug' component={AdminProjectDetailsComponent}></Route>      
      
-            
-            
-            
           </Switch>
           
           <FooterComponent></FooterComponent>

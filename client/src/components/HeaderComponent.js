@@ -1,10 +1,9 @@
 import React, { Component }  from 'react';
 import { Link } from 'react-router-dom'
 //import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
-//import axios from 'axios';
+import axios from 'axios';
 
 class Header extends Component {
-  
   
   logoutAdmin() {
     localStorage.removeItem('admin-jwtToken');
@@ -17,12 +16,30 @@ class Header extends Component {
     window.location.href="/login";
   }
 
+  componentDidMount()
+  {
+    this.fetchAllServicesForMenu();
+  }
+
+  fetchAllServicesForMenu = () => {
+		const url = 'http://localhost:3001/api/allservices';
+		axios.get(url)
+			.then(response => {
+					this.setState({
+					  isLoading: false,
+					  servicesMenu: response.data
+					})
+					//console.log(response.data);		
+			})
+			.catch(error => this.setState({ error, isLoading: false }));  
+	}
+
   render() {
     this.state = {
       loginUser: JSON.parse(localStorage.getItem('userdetails')),
       adminLoginUser: JSON.parse(localStorage.getItem('admin-userdetails'))
     }
-    //console.log('=====>'+this.state.loginUser);
+    
     var username = '';
     var isAdmin = '';
     var isAdminUser = false;
@@ -44,7 +61,7 @@ class Header extends Component {
     
     if(isAdmin === true){
       if(window.location.href.indexOf("admin") > -1){
-        console.log('admin');
+        //console.log('admin');
         
         return (
           <header id="header">
@@ -99,7 +116,7 @@ class Header extends Component {
             loginUserData.push(<li key="login"><Link to="/login"> Login </Link> | <Link to="/register"> Sign up </Link> </li>);
           }
         } else {
-          console.log(username);
+          //console.log(username);
           loginUserData.push(<li key="login"><Link to="/login"> Login </Link> | <Link to="/register"> Sign up </Link> </li>);
         }
         return (
@@ -126,9 +143,10 @@ class Header extends Component {
       }
       
     } else {
-      console.log('main else hp'+isAdminUser);
+     // console.log('main else hp'+isAdminUser);
+      
       if(isAdminUser === true){
-        console.log('It is Admin user');
+        //console.log('It is Admin user');
         if(window.location.href.indexOf("admin") > -1){
           return (
             <header id="header">
@@ -193,7 +211,7 @@ class Header extends Component {
           );
         }        
       } else {
-        console.log('No Admin user');
+        //console.log('No Admin user');
       }
       return (
         <header id="header">

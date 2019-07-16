@@ -12,7 +12,8 @@ exports.login = async function(req, res)
     console.log('In login API===>'+req.body.username);
     
     await userModel.findOne({
-      username: req.body.username
+      username: req.body.username,
+      password: req.body.password
     }, function(err, user) {
       if (err) throw err;
   

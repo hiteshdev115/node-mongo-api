@@ -31,10 +31,7 @@ class Portfolio extends Component {
         })
         .catch(error => this.setState({ error, isLoading: false }));  
   }
-  
-  
-    
-  
+ 
   render() {    
     
     const { projects, error, isLoading } = this.state;   
@@ -78,18 +75,22 @@ class Portfolio extends Component {
                             {error ? <p>{error.message}</p> : null}
                             {!isLoading ? (
                                 projects.map(project => {
-                                const { _id, title, category, projectimage } = project;											
+                                const { _id, slug, title, category, projectimage } = project;											
                                 return (	
                                     <LazyLoad key={_id} height={50} offset={[-100, 100]}>									
                                     <div className="single-portfolio col-6 remove-hover" key={_id}>
                                         <div className="relative">
                                             <div className="thumb">
+                                              <a href={"/portfolio/"+slug}>
                                                 <img className="image img-fluid" src={"/images/"+projectimage} alt={title} title={title}></img>
+                                              </a>
                                             </div>												
                                         </div>
                                         <div className="p-inner">
-                                            <h4>{title}</h4>
-                                            <div className="cat">{category}</div>
+                                            <a href={"/portfolio/"+slug}>
+                                              <h4>{title}</h4>
+                                              <div className="cat">{category}</div>
+                                            </a>
                                         </div>
                                     </div>
                                     </LazyLoad>

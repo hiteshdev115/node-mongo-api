@@ -20,7 +20,7 @@ function Footer(/*props*/) {
                         <div className="single-footer-widget">
                             <h4>About Me</h4>
                             <p>
-                                We have tested a number of registry fix and clean utilities and present our top 3 list on our site for your convenience.
+                            Clever Samurai™ is a strategy-first, marketing consultancy and creative communications firm. We help organizations achieve more - by realizing what’s possible - so they can grow their profits and their social impact.
                             </p>
                             <p className="footer-text">
                               Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved 
@@ -51,10 +51,10 @@ function Footer(/*props*/) {
                             <h4>Follow Me</h4>
                             <p>Let us be social</p>
                             <div className="footer-social d-flex align-items-center">
-                                <a href="#"><i className="fa fa-facebook"></i></a>
-                                <a href="#"><i className="fa fa-twitter"></i></a>
-                                <a href="#"><i className="fa fa-dribbble"></i></a>
-                                <a href="#"><i className="fa fa-behance"></i></a>
+                                <a href="https://twitter.com/cleversamurai/" target="_blank"><img src={"http://localhost:3000/images/twitter-icon.png"} alt="Twitter"></img></a>
+                                <a href="https://www.linkedin.com/company/clever-samurai" target="_blank"><img src={"http://localhost:3000/images/linkedin-icon.png"} alt="LinkedIn"></img></a>
+                                <a href="https://www.instagram.com/cleversamurai/" target="_blank"><img src={"http://localhost:3000/images/instagram-icon.png"} alt="Instagram"></img></a>
+                                <a href="https://www.youtube.com/channel/UCStqDLk5Srt4l42CKrqb_DQ?view_as=subscriber" target="_blank"><img src={"http://localhost:3000/images/youtube-icon.png"} alt="YouTube"></img></a>
                             </div>
                         </div>
                     </div>
