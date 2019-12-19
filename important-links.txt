@@ -40,3 +40,10 @@ https://www.npmjs.com/package/react-global-configuration
 For Open Modal popup
 --------------------
 https://www.npmjs.com/package/react-modal
+
+For Webpack sample project in React / NodeJs 
+---------------------------------------------
+https://hackernoon.com/full-stack-web-application-using-react-node-js-express-and-webpack-97dbd5b9d708
+https://github.com/crsandeep/simple-react-full-stack
+
+https://dev.to/kedar9/creating-a-node-app-with-react-webpack-4-babel-7-express-and-sass-3mae

@@ -24,6 +24,9 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "install": "^0.13.0",
+    "multer-resizer": "github:mertdogar/multer-resizer",
+    "nodemon": "^1.19.1",
+    "npm": "^6.10.2"
   }
 }
